@@ -29,7 +29,7 @@ public class Main {
         System.out.println("WITH DEPTH 6");
         Instant start1 = Instant.now();
 
-        for (int i = 0; i < 25; i++){
+        for (int i = 0; i < 1; i++){
             m = g.getBestMove(6);
             System.out.println(m);
             g.makeMove(m);
@@ -39,6 +39,8 @@ public class Main {
 
         Instant end1 = Instant.now();
         System.out.println("Time to calculate: " + Duration.between(start1, end1));
+
+
 
     }
 

@@ -48,6 +48,6 @@ public final class Piece {
 
     @Override
     public String toString() {
-        return COLOR.toString().substring(0,1) + TYPE.toString();
+        return COLOR == PieceColor.WHITE ? TYPE.toString().toUpperCase() : TYPE.toString().toLowerCase();
     }
 }

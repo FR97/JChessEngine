@@ -266,38 +266,38 @@ public class Chessboard {
         onMove = (onMove == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
-    public void printChessboard(){
-
-        System.out.print("\n---------------------------------------------\n              CHESSBOARD STATE\n\n    ");
+    public void printChessboard() {
+        String s ="\n-------------------------------------\n          CHESSBOARD STATE\n\n   ";
         char c = 'A';
         for (int j = 0; j < 9; j++){
 
             for (int i = 0; i < 8; i++){
                 if(j ==0)
-                    System.out.print(" "+ c++ +"   ");
+                    s+=" "+ c++ +"  ";
                 else {
                     if(i==0 && j != 0)
-                        System.out.print(j+" ");
-                    System.out.print("| ");
+                        s+=j+" ";
+                    s+="| ";
                     Piece p = PIECES.get(Position.get(i,j-1));
                     if(p != null)
-                        System.out.print(p);
+                        s+=p.toString();
                     else
-                        System.out.print("  ");
-                    System.out.print(" ");
+                        s+=" ";
+                    s+=" ";
                 }
 
             }
 
             if(j !=0)
-                System.out.print("|\t\n  -----------------------------------------\n");
+                s+="|\t\n  ---------------------------------\n";
             else
-                System.out.print("\t\n  -----------------------------------------\n");
+                s+="\t\n  ---------------------------------\n";
 
 
         }
 
-        System.out.print("\nCurrently on move: "+onMove+"\n\n");
+        s+="\nCurrently on move: "+onMove+"\n\n";
+        System.out.println(s);
     }
 
 }
