@@ -5,6 +5,7 @@ import core.Game;
 import core.Pieces.Piece;
 import core.Pieces.PieceColor;
 import core.Pieces.PieceType;
+import core.Players.AiPlayerMinimax;
 import core.Utils.Position;
 import javafx.geometry.Pos;
 
@@ -24,17 +25,21 @@ public class MoveGenerator {
 
     }
 
-    public static List<Move> getAllPossibleMoves(Chessboard chessboard){
+    public static List<Move> getAllPossibleMoves(Chessboard chessboard, PieceColor color){
         if(Game.DEBUG_MODE)
             System.out.println("GENERATING ALL POSSIBLE MOVES FOR " + chessboard.getOnMove() +" ...");
         List<Move> moves = new ArrayList<>();
-        TreeSet<Position> positions = chessboard.getAllPositionsForColor(chessboard.getOnMove());
+        TreeSet<Position> positions = chessboard.getAllPositionsForColor(color);
         positions.forEach(position ->{
             moves.addAll(getPossibleMovesForPieceAt(position, chessboard));
         });
         if(Game.DEBUG_MODE)
             System.out.println("FINISHED GENERATING");
         return moves;
+    }
+
+    public static List<Move> getAllPossibleMoves(Chessboard chessboard){
+        return getAllPossibleMoves(chessboard, chessboard.getOnMove());
     }
 
     public static List<Move> getPossibleMovesForPieceAt(Position position, Chessboard chessboard){

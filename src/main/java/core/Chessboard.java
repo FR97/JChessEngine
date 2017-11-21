@@ -36,7 +36,7 @@ public class Chessboard {
         PIECES.put(Position.get(7, 0), Piece.BlackRook);
         PIECES.put(Position.get(1, 0), Piece.BlackKnight);
         PIECES.put(Position.get(6, 0), Piece.BlackKnight);
-        PIECES.put(Position.get(2, 0), Piece.BlackKnight);
+        PIECES.put(Position.get(2, 0), Piece.BlackBishop);
         PIECES.put(Position.get(5, 0), Piece.BlackBishop);
         PIECES.put(Position.get(3, 0), Piece.BlackQueen);
         PIECES.put(Position.get(4, 0), Piece.BlackKing);
@@ -71,6 +71,10 @@ public class Chessboard {
 
     }
 
+    /**
+     * Copy constructor
+     * @param chessboard - chessboard to copy
+     */
     public Chessboard(Chessboard chessboard){
 
         this.PIECES = new HashMap<>();
@@ -118,7 +122,7 @@ public class Chessboard {
 
     public void move(Move move) {
 
-        System.out.println(move);
+        //System.out.println("Move made:" + move);
 
         if(whiteKingsideCastling || whiteQueensideCastling || blackKingsideCastling || blackQueensideCastling)
             updateCastling(move);
@@ -144,7 +148,6 @@ public class Chessboard {
             PIECES.put(move.TO, PIECES.remove(move.FROM));
             PIECES.remove(Position.get(move.TO.X, move.FROM.Y));
         }
-
 
        // moveHistory.addMove(move);
         toggleOnMove();
@@ -190,6 +193,10 @@ public class Chessboard {
 
     }
 
+    public int getPieceCount(){
+        return this.PIECES.size();
+    }
+
     public PieceColor getOnMove(){
         return this.onMove;
     }
@@ -202,12 +209,14 @@ public class Chessboard {
     }
 
     public TreeSet<Position> getAllPositionsForColor(PieceColor color){
-
+        //System.out.println("Number of pieces - " + PIECES.keySet().size());
         TreeSet<Position> positions = new TreeSet<>();
-        PIECES.forEach((position, piece) -> {
-            if(piece.COLOR == color)
-                positions.add(position);
-        });
+        for (Position p: PIECES.keySet()) {
+            if(PIECES.get(p).COLOR == color){
+               // System.out.println("PIECES: " +PIECES.get(p) + " AT " + p);
+                positions.add(p);
+            }
+        }
         return positions;
     }
 
@@ -291,58 +300,4 @@ public class Chessboard {
         System.out.print("\nCurrently on move: "+onMove+"\n\n");
     }
 
-    /**
-     * Tries converting string board to
-     * @param boardAsString
-     * @return
-     */
-    public boolean tryConvertFrom2DArray(String[][] boardAsString){
-        if(boardAsString.length != 8 || boardAsString[0].length != 8)
-            return false;
-        PIECES.clear();
-        for (int j = 0; j < 8; j++) {
-            for (int i = 0; i < 8; i++)
-                switch (boardAsString[i][j]) {
-                    case "wpa":
-                        PIECES.put(Position.get(i, j),Piece.WhitePawn);
-                        break;
-                    case "wro":
-                        PIECES.put(Position.get(i, j),Piece.WhiteRook);
-                        break;
-                    case "wkn":
-                        PIECES.put(Position.get(i, j),Piece.WhiteKnight);
-                        break;
-                    case "wbi":
-                        PIECES.put(Position.get(i, j),Piece.WhiteBishop);
-                        break;
-                    case "wqu":
-                        PIECES.put(Position.get(i, j),Piece.WhiteQueen);
-                        break;
-                    case "wki":
-                        PIECES.put(Position.get(i, j),Piece.WhiteKing);
-                        break;
-                    case "bpa":
-                        PIECES.put(Position.get(i, j),Piece.WhitePawn);
-                        break;
-                    case "bro":
-                        PIECES.put(Position.get(i, j),Piece.BlackRook);
-                        break;
-                    case "bkn":
-                        PIECES.put(Position.get(i, j),Piece.BlackKnight);
-                        break;
-                    case "bbi":
-                        PIECES.put(Position.get(i, j),Piece.BlackBishop);
-                        break;
-                    case "bqu":
-                        PIECES.put(Position.get(i, j),Piece.BlackQueen);
-                        break;
-                    case "bki":
-                        PIECES.put(Position.get(i, j),Piece.BlackKing);
-                        break;
-                    default:
-                }
-        }
-
-        return true;
-    }
 }

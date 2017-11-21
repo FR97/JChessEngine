@@ -5,6 +5,7 @@ import core.Moves.MoveGenerator;
 import core.Moves.MoveType;
 import core.Moves.MoveValidator;
 import core.Pieces.PieceColor;
+import core.Players.AiPlayerMinimax;
 import core.Utils.Position;
 
 import java.util.Iterator;
@@ -15,15 +16,17 @@ import java.util.List;
  */
 public class Game {
 
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
     private PieceColor onMove;
     private Chessboard chessboard;
     private MoveGenerator moveGenerator;
+    private BasicEvaluator evaluator;
 
     public Game() {
         chessboard = new Chessboard();
         chessboard.printChessboard();
         moveGenerator = new MoveGenerator();
+        evaluator = new BasicEvaluator();
     }
 
     /**
@@ -36,6 +39,10 @@ public class Game {
         return makeMove(new Move(from, to, chessboard.getPiece(from), type));
     }
 
+    public double evaluateChessboard(){
+        return evaluator.evaluate(chessboard, 1);
+    }
+
     /**
      * @param move to make
      * @return true if move if valid
@@ -45,6 +52,17 @@ public class Game {
         chessboard.printChessboard();
         toggleOnMove();
         return true;
+    }
+
+    public void printBestMove(){
+        AiPlayerMinimax minimax = new AiPlayerMinimax();
+        Move m = minimax.getBestMove(chessboard, 4);
+        System.out.println("BEST MOVE EVER:" + m);
+    }
+
+    public Move getBestMove(int depth){
+        AiPlayerMinimax minimax = new AiPlayerMinimax();
+        return  minimax.getBestMove(chessboard, depth);
     }
 
     public List<Move> getPossibleMoves(Position position) {

@@ -5,5 +5,5 @@ package core;
  */
 public interface Evaluator<T> {
 
-    double evaluate(T chessboard);
+    double evaluate(T chessboard, int depth);
 }
