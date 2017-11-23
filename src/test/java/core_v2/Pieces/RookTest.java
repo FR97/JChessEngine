@@ -1,6 +1,7 @@
 package core_v2.Pieces;
 
 import core_v2.Chessboards.Chessboard;
+import core_v2.Game;
 import core_v2.Moves.Move;
 import core_v2.Moves.MoveType;
 import core_v2.Utils.Position;
@@ -34,7 +35,7 @@ public class RookTest {
         chessboard.makeMove(chessboard.getPiece(2,3).getPossibleMoves().get(1));
         System.out.println(chessboard.getPiece(0,1).getPossibleMoves());
         chessboard.makeMove(chessboard.getPiece(0,1).getPossibleMoves().get(2));*/
-        
+
 
         /* Castling check
         Chessboard chessboard = new Chessboard();
@@ -55,6 +56,10 @@ public class RookTest {
         System.out.println(chessboard.getPiece(4,0).getPossibleMoves());
         chessboard.makeMove(chessboard.getPiece(4,0).getPossibleMoves().get(5));
         */
+
+        Game g = new Game();
+
+
     }
 
     @Test

@@ -7,6 +7,7 @@ import core_v2.Moves.Move;
 import core_v2.Moves.MoveGenerator;
 import core_v2.Moves.MoveType;
 import core_v2.Pieces.PieceColor;
+import core_v2.Players.Player;
 import core_v2.Utils.Position;
 
 import java.util.ArrayList;
@@ -20,12 +21,16 @@ public class Game {
     public static final boolean DEBUG_MODE = true;
     private PieceColor onMove;
     private Chessboard chessboard;
-    private MoveGenerator moveGenerator;
+
+    private Player whitePlayer;
+    private Player blackPlayer;
 
 
     public Game() {
         chessboard = new Chessboard();
-        moveGenerator = new MoveGenerator();
+
+        whitePlayer = new Player(PieceColor.WHITE);
+        blackPlayer = new Player(PieceColor.BLACK);
     }
 
     /**
@@ -73,6 +78,13 @@ public class Game {
         return moves;
     }
 
+    public Player getWhitePlayer() {
+        return whitePlayer;
+    }
+
+    public Player getBlackPlayer() {
+        return blackPlayer;
+    }
 
     public void printPossibleMoves(Position position) {
         List<Move> moves = getPossibleMoves(position);

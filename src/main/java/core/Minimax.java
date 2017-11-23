@@ -24,6 +24,7 @@ public class Minimax extends Thread{
         this.evaluator = new BasicEvaluator();
         this.results = results;
         this.move = m;
+        this.min = min;
 
     }
 

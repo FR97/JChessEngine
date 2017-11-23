@@ -20,6 +20,19 @@ public class MoveGenerator {
 
     }
 
+    public static List<Move> getAllPossibleMoves(Chessboard chessboard, PieceColor color){
+        if(Game.DEBUG_MODE)
+            System.out.println("GENERATING ALL POSSIBLE MOVES FOR " + chessboard.getOnMove() +" ...");
+        List<Move> moves = new ArrayList<>();
+        List<Piece> pieces = chessboard.getPiecesForColor(color);
+        pieces.forEach(piece ->{
+            moves.addAll(piece.getPossibleMoves());
+        });
+        if(Game.DEBUG_MODE)
+            System.out.println("FINISHED GENERATING\n Number of moves found: " + moves.size());
+        return moves;
+    }
+
     public static List<Move> getPossibleMovesForOffsets(Piece movingPiece, Chessboard chessboard, Position[] offsets){
         List<Move> moves = new ArrayList<>();
 
