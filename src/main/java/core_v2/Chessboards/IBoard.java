@@ -78,6 +78,8 @@ public interface IBoard<E>{
      */
     void initializeBoard();
 
+    boolean undoMove();
+
     /**
      * Creates chessboard from FEN string passed
      * if string is valid

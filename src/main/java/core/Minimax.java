@@ -32,6 +32,7 @@ public class Minimax extends Thread{
     public void run() {
         double result;
         result = alfabeta(depth, chessboard, -50000, 50000, min);
+        System.out.println("\u001B[32m And The final result"+ result +"\u001B[0m");
         results.put(move,result);
     }
 
@@ -78,7 +79,9 @@ public class Minimax extends Thread{
     public double alfabeta(int depth, Chessboard chessboard, double alfa, double beta, boolean min){
 
         if(depth == 0){
-            return evaluator.evaluate(chessboard, depth);
+            double result = evaluator.evaluate(chessboard, depth);
+            System.out.println("\u001B[31m The result is "+ result +"\u001B[0m");
+            return result;
         }
         if(min){
             double current = -50000;
@@ -98,7 +101,7 @@ public class Minimax extends Thread{
             for (Move m : MoveGenerator.getAllPossibleMoves(chessboard)){
                 Chessboard cb = new Chessboard(chessboard);
                 cb.move(m);
-                current =Math.max(current, alfabeta(depth-1, cb, alfa, beta, !min));
+                current =Math.min(current, alfabeta(depth-1, cb, alfa, beta, !min));
                 beta = Math.min(beta, current);
                 if(beta <=alfa)
                     break;

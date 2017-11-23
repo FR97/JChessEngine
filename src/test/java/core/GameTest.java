@@ -48,11 +48,11 @@ public class GameTest {
 
         Move m = g.getBestMove(1);
         g.makeMove(m);
-        /*
+
         System.out.println("WITH DEPTH 1");
         g.printBestMove();
 
-        Move m = g.getBestMove(1);
+        m = g.getBestMove(1);
         System.out.println(m);
         g.makeMove(m);
         m = g.getBestMove(1);
@@ -72,15 +72,15 @@ public class GameTest {
         System.out.println(m);
         g.makeMove(m);
 
-        System.out.println("WITH DEPTH 4");
+        System.out.println("WITH DEPTH 5");
         Instant start = Instant.now();
-        m = g.getBestMove(4);
+        m = g.getBestMove(5);
         System.out.println(m);
         g.makeMove(m);
         Instant end = Instant.now();
         System.out.println("Time to calculate: " +Duration.between(start, end));
 
-
+        /*
         System.out.println("WITH DEPTH 5");
         Instant start1 = Instant.now();
         m = g.getBestMove(5);
