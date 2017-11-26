@@ -3,12 +3,10 @@ package core_v2.Moves;
 import core_v2.Chessboards.IntBoard;
 import core_v2.Game;
 import core_v2.Pieces.*;
-import core_v2.Players.Player;
 import core_v2.Utils.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -22,25 +20,12 @@ public class MoveGenerator {
 
     }
 
-    public static List<Move> getAllPossibleMovesForPlayer(IntBoard chessboard){
-
-        final List<Move> moves = new ArrayList<>();
-        chessboard.getPiecePositionsForColor(chessboard.getOnMove()).forEach(position -> {
-           // if(Game.DEBUG_MODE)
-                //System.out.println("Checking possible moves for " + position);
-
-            moves.addAll(getPossibleMovesForPieceAt(position, chessboard));
-        });
-       // System.out.println("Number of possible moves: " + moves.size());
-        return moves;
-    }
-
     public static List<Move> getPossibleMovesForPieceAt(Position position, IntBoard chessboard){
 
         List<Move> moves = new ArrayList<>();
         PieceType type = Piece.getPieceById(chessboard.getPiece(position)).type;
-       // if(Game.DEBUG_MODE)
-           // System.out.println("Finding possible moves for " +chessboard.getPiece(position) + " at " + position);
+        if(Game.DEBUG_MODE)
+            System.out.println("Finding possible moves for " +chessboard.getPiece(position) + " at " + position);
         switch (type){
             case PAWN: moves.addAll(possibleMovesForPawn(position, chessboard));
                 break;
@@ -110,8 +95,8 @@ public class MoveGenerator {
 
         while (i < 8){
             Position possiblePosition = Position.withOffsets(piecePosition, xDirection *i, yDirection*i);
+            int pieceToEat = chessboard.getPiece(possiblePosition);
             if(possiblePosition != null){
-                int pieceToEat = chessboard.getPiece(possiblePosition);
                 if(pieceToEat == 0){
                     Move possibleMove = new Move(piece, piecePosition, possiblePosition);
                     moves.add(possibleMove);

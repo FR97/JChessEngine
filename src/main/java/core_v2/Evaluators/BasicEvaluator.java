@@ -2,11 +2,8 @@ package core_v2.Evaluators;
 
 
 
-import core_v2.Chessboards.IntBoard;
 import core_v2.Game;
 import core_v2.Pieces.Piece;
-import core_v2.Pieces.PieceColor;
-import core_v2.Utils.Position;
 
 import java.util.List;
 
@@ -15,33 +12,10 @@ import java.util.List;
  */
 public class BasicEvaluator{
 
-    private int lastBlackCount = 0;
-    private int lastWhiteCount = 0;
-    private double lastSum = 0;
+    private int lastPieceCount;
+
     public BasicEvaluator(){
-
-    }
-
-    public double evaluate(IntBoard chessboard){
-
-        if(chessboard.getBlackPieceCount() == lastBlackCount && chessboard.getWhitePieceCount() == lastWhiteCount){
-            return lastSum;
-        }
-
-        List<Position> onMovePositions = chessboard.getPiecePositionsForColor(chessboard.getOnMove());
-        PieceColor opponent = chessboard.getOnMove() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-        List<Position> opponentPositions = chessboard.getPiecePositionsForColor(opponent);
-        double sum = chessboard.getOnMove().value();
-        for (Position p: onMovePositions) {
-            sum += Piece.getPieceById(chessboard.getPiece(p)).type.value();
-        }
-        for (Position p: opponentPositions){
-            sum -=  Piece.getPieceById(chessboard.getPiece(p)).type.value();
-        }
-       // System.out.println("FINAL SUM IS " + sum);
-        lastSum = sum;
-        return sum;
-
+        lastPieceCount = 0;
     }
 
     /**

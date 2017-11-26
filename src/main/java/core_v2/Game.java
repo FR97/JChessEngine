@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Game {
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
     private PieceColor onMove;
 
 
