@@ -4,8 +4,11 @@ import core_v2.Moves.Move;
 import core_v2.Pieces.Piece;
 import core_v2.Pieces.PieceColor;
 import core_v2.Utils.Position;
+import javafx.geometry.Pos;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -23,6 +26,8 @@ public class IntBoard {
     private boolean blackQueensideCastling;
     private boolean blackKingsideCastling;
 
+    private int whitePieceCount;
+    private int blackPieceCount;
 
     private int chessboard[][] = {
         {-2, -3, -4, -5, -6, -4, -3, -2},
@@ -46,6 +51,9 @@ public class IntBoard {
         blackKingsideCastling = true;
         blackQueensideCastling = true;
 
+        whitePieceCount = 16;
+        blackPieceCount = 16;
+
     }
 
     public IntBoard(IntBoard chessboard){
@@ -67,10 +75,44 @@ public class IntBoard {
         this.blackKingsideCastling = chessboard.isBlackKingsideCastlingPossible();
         this.blackQueensideCastling = chessboard.isBlackQueensideCastlingPossible();
 
+        this.whitePieceCount = chessboard.getWhitePieceCount();
+        this.blackPieceCount = chessboard.getBlackPieceCount();
+
     }
 
     public int getPiece(Position position){
+
         return chessboard[position.Y][position.X];
+    }
+
+    public List<Position> getPiecePositionsForColor(PieceColor color){
+        if(color == PieceColor.WHITE){
+            List<Position> positions = new ArrayList<>(whitePieceCount);
+            for(int j = 7; j >=0; j--){
+                for(int i = 7; i >=0; i--){
+                    if(chessboard[j][i] > 0){
+                        positions.add(Position.get(i,j));
+                        if(positions.size() == whitePieceCount){
+                            return positions;
+                        }
+                    }
+                }
+            }
+            return positions;
+        }else{
+            List<Position> positions = new ArrayList<>(blackPieceCount);
+            for(int j=0; j < 8; j++) {
+                for (int i = 0; i < 8; i++) {
+                    if(chessboard[j][i] < 0){
+                        positions.add(Position.get(i,j));
+                        if(positions.size() == blackPieceCount){
+                            return positions;
+                        }
+                    }
+                }
+            }
+            return positions;
+        }
     }
 
     public boolean makeMove(Move move){
@@ -100,6 +142,11 @@ public class IntBoard {
             }
         }
 
+        if(move.eatenPiece > 0){
+            whitePieceCount++;
+        }else if(move.eatenPiece < 0){
+            blackPieceCount++;
+        }
 
         enpassantPossible = false;
         enpassantPosition = null;
@@ -198,6 +245,33 @@ public class IntBoard {
         chessboard[move.from.Y][move.to.X] = move.eatenPiece;
     }
 
+    public int[] getPiecesForColor(PieceColor color){
+        int counter = 0;
+        if(color == PieceColor.WHITE){
+            int[] pieces = new int[whitePieceCount];
+            for(int j=0; j < 8; j++){
+                for(int i=0; i < 8; i++){
+                    if(this.chessboard[j][i] > 0){
+                        pieces[0] =chessboard[j][i];
+                        counter++;
+                    }
+                }
+            }
+            return pieces;
+        }else{
+            int[] pieces = new int[blackPieceCount];
+            for(int j=0; j < 8; j++){
+                for(int i=0; i < 8; i++){
+                    if(this.chessboard[j][i] < 0){
+                        pieces[0] =chessboard[j][i];
+                        counter++;
+                    }
+                }
+            }
+            return pieces;
+        }
+
+    }
 
     public void toggleOnMove(){
         onMove = (onMove == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
@@ -233,6 +307,14 @@ public class IntBoard {
 
     public boolean isBlackKingsideCastlingPossible() {
         return blackKingsideCastling;
+    }
+
+    public int getWhitePieceCount() {
+        return whitePieceCount;
+    }
+
+    public int getBlackPieceCount() {
+        return blackPieceCount;
     }
 
     public void printChessboard(boolean full){

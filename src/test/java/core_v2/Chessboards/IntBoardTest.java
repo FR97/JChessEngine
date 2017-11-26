@@ -1,6 +1,7 @@
 package core_v2.Chessboards;
 
 
+import core.Chessboard;
 import core_v2.Moves.Move;
 import core_v2.Moves.MoveGenerator;
 import core_v2.Moves.MoveType;
@@ -20,10 +21,11 @@ public class IntBoardTest {
     public void getMoveHistory() throws Exception {
         IntBoard chessboard = new IntBoard();
 
+        System.out.println(MoveGenerator.getAllPossibleMovesForPlayer(chessboard));
+
         chessboard.makeMove(new Move(1, Position.get(1,6), Position.get(1,5)));
 
         IntBoard chessboard2 = new IntBoard(chessboard);
-
         chessboard2.undoMove();
 
 
@@ -38,9 +40,12 @@ public class IntBoardTest {
         IntBoard chessboard = new IntBoard();
 
         System.out.println(MoveGenerator.getPossibleMovesForPieceAt(Position.get(1,6), chessboard));
-
+        chessboard.printChessboard(true);
+        System.out.println();
         chessboard.makeMove(new Move(1, Position.get(1,6), Position.get(1,5)));
-
+        chessboard.printChessboard(true);
+        chessboard.makeMove(new Move(-1, Position.get(0,1), Position.get(0,2)));
+        chessboard.printChessboard(true);
         int expected = 1;
         int actual = chessboard.getPiece(Position.get(1,5));
 
@@ -72,7 +77,6 @@ public class IntBoardTest {
 
         int expected = -6;
         int actual = chessboard.getPiece(Position.get(4,0));
-
         assertEquals(expected, actual);
     }
 
@@ -86,6 +90,8 @@ public class IntBoardTest {
         PieceColor actual = chessboard.getOnMove();
 
         assertEquals(expected,actual);
+
+
     }
 
 }
