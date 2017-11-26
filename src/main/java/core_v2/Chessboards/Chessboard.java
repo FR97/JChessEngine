@@ -153,12 +153,6 @@ public class Chessboard implements IBoard<Piece>, Serializable{
 
     }
 
-    public List<Piece> getPiecesForColor(PieceColor color){
-        if(color == PieceColor.WHITE)
-            return getWhitePieces();
-
-        return getBlackPieces();
-    }
     @Override
     public List<Piece> getWhitePieces() {
         //List<Piece> pieces = new ArrayList<>(whitePieces.values());
@@ -400,7 +394,4 @@ public class Chessboard implements IBoard<Piece>, Serializable{
         return enpassantPawnPosition;
     }
 
-    public int getPieceCount() {
-        return whitePieces.size() + blackPieces.size();
-    }
 }
