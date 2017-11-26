@@ -6,7 +6,8 @@ package core_v2.Moves;
 public enum MoveType {
     NORMAL(1),
     PAWN_DOUBLE_JUMP(1),
-    ENPASSANT(1.02),
+    ATTACK(1),
+    ENPASSANT(1.1),
     CASTLING(1.2);
 
     double factor;

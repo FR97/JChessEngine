@@ -1,5 +1,6 @@
 package core_v2.Moves;
 
+import core_v2.Chessboards.Chessboard;
 import core_v2.Pieces.Piece;
 import core_v2.Utils.Position;
 
@@ -8,52 +9,51 @@ import core_v2.Utils.Position;
  */
 public class Move {
 
-    public final int movingPiece;
-    public final int eatenPiece;
-    public final Position from;
-    public final Position to;
+    private final Piece movingPiece;
+    public final Position toPosition;
     public final MoveType type;
 
-    public Move(int movingPiece,Position from, Position to ) {
+    public Move(Piece movingPiece, Position toPosition, MoveType type) {
         this.movingPiece = movingPiece;
-        this.from = from;
-        this.to = to;
-        this.eatenPiece = 0;
-        this.type = MoveType.NORMAL;
-    }
-
-    public Move(int movingPiece,Position from, Position to, MoveType type) {
-        this.movingPiece = movingPiece;
-        this.from = from;
-        this.to = to;
-        this.eatenPiece = 0;
+        this.toPosition = toPosition;
         this.type = type;
     }
 
-    public Move(int movingPiece,Position from, Position to, int eatenPiece) {
+    public Move(Piece movingPiece, Position toPosition){
         this.movingPiece = movingPiece;
-        this.from = from;
-        this.to = to;
-        this.eatenPiece = eatenPiece;
+        this.toPosition = toPosition;
         this.type = MoveType.NORMAL;
     }
 
-    public Move(int movingPiece,Position from, Position to, int eatenPiece, MoveType type) {
-        this.movingPiece = movingPiece;
-        this.from = from;
-        this.to = to;
-        this.eatenPiece = eatenPiece;
-        this.type = type;
+    public Piece getMovingPiece() {
+        return movingPiece;
     }
 
     @Override
     public String toString() {
-        return "Move{" +
-                "movingPiece=" + movingPiece +
-                ", eatenPiece=" + eatenPiece +
-                ", from=" + from +
-                ", to=" + to +
+        return "Move{movingPiece=" + movingPiece +
+                ", toPosition=" + toPosition +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Move move = (Move) o;
+
+        if (!movingPiece.equals(move.movingPiece)) return false;
+        if (!toPosition.equals(move.toPosition)) return false;
+        return type == move.type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = movingPiece.hashCode();
+        result = 31 * result + toPosition.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
     }
 }

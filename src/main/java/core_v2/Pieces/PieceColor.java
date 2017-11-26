@@ -18,5 +18,4 @@ public enum PieceColor implements Serializable{
     public int value(){
         return this.value;
     }
-
 }
