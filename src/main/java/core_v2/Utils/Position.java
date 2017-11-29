@@ -50,6 +50,10 @@ public final class Position implements Comparable<Position>{
         this.Y = y;
     }
 
+    public byte to1D(){
+        return (byte)(this.X + this.Y*8);
+    }
+
     /**
      * Checks if passed coordinates are valid
      * @return true if x and y are between 0 and 7
@@ -59,6 +63,11 @@ public final class Position implements Comparable<Position>{
             return false;
 
         return true;
+    }
+
+    public static Position from1D(int position){
+
+        return get(position%8, position/8);
     }
 
     /**
@@ -94,7 +103,10 @@ public final class Position implements Comparable<Position>{
 
     @Override
     public String toString() {
-        return "Position{X=" + X +", Y=" + Y + '}';
+        return "Position{" +
+                "X=" + X +
+                ", Y=" + Y +
+                '}';
     }
 
     @Override

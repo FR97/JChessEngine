@@ -1,0 +1,42 @@
+.chessboard-style{
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+.chessboard-grid{
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 8px;
+    -fx-pref-width: 640px;
+    -fx-max-height: 640px;
+    -fx-text-alignment: center;
+    -fx-padding: 0px;
+    -fx-border-insets: 20px;
+}
+.tile-style {
+    -fx-font-weight: normal;
+    -fx-font-size: 10;
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 0;
+}
+
+.tile-white{
+    -fx-background-color: white;
+}
+.tile-black{
+    -fx-background-color: darkgray;
+}
+
+.tile-selected{
+    -fx-background-color: deepskyblue;
+
+}
+.tile-checked{
+    -fx-background-color: red;
+}
+
+.tile-possible{
+    -fx-background-color: green;
+}
