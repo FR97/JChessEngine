@@ -11,9 +11,9 @@ import core_v2.Utils.Position;
  */
 public class CastlingMove extends Move {
     public final Piece movingRook;
-    public final Position toPositionRook;
+    public final byte toPositionRook;
 
-    public CastlingMove(Chessboard chessboard, Piece movingPiece, Position toPosition, Piece movingRook, Position toPositionRook) {
+    public CastlingMove(Chessboard chessboard, Piece movingPiece, byte toPosition, Piece movingRook, byte toPositionRook) {
         super(chessboard, movingPiece, toPosition, MoveType.CASTLING);
         this.movingRook = movingRook;
         this.toPositionRook = toPositionRook;

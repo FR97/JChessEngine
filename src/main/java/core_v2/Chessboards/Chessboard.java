@@ -188,7 +188,7 @@ public class Chessboard implements Serializable {
     }
 
     public Piece getPiece(int position) {
-        return Piece.getPieceByIdAndPosition(position, chessboard[position]);
+        return Piece.getPieceByIdAndPosition((byte)position, chessboard[position]);
     }
 
     public void printChessboard() {
@@ -326,7 +326,7 @@ public class Chessboard implements Serializable {
         }
 
         public void setPiece(Piece piece) {
-            setPiece(piece.position.to1D(), (byte) (piece.color.value() * piece.type.id()));
+            setPiece(piece.position, (byte) (piece.color.value() * piece.type.id()));
         }
 
         public void reset() {

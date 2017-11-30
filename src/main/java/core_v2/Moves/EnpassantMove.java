@@ -12,7 +12,7 @@ import core_v2.Utils.Position;
 public class EnpassantMove extends Move{
     public final Piece eatenPawn;
 
-    public EnpassantMove(Chessboard chessboard, Piece movingPiece, Position toPosition, Piece eatenPawn) {
+    public EnpassantMove(Chessboard chessboard, Piece movingPiece, byte toPosition, Piece eatenPawn) {
         super(chessboard, movingPiece, toPosition, MoveType.ENPASSANT);
         this.eatenPawn = eatenPawn;
     }

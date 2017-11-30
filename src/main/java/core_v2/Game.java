@@ -51,13 +51,13 @@ public class Game {
                 return false;
             } else {
                 for (Move move : possibleMoves) {
-                    if (move.movingPiece.position.equals(from) && move.toPosition.equals(to)) {
+                    if (move.movingPiece.position == from.to1D() && move.toPosition == to.to1D()) {
                         System.out.println("Move " + move + " is valid");
                         if (move.movingPiece.type == PieceType.KING) {
                             if (chessboard.getOnMove() == PieceColor.WHITE)
-                                whiteKingPosition = move.toPosition;
+                                whiteKingPosition = Position.from1D(move.toPosition);
                             else
-                                blackKingPosition = move.toPosition;
+                                blackKingPosition = Position.from1D(move.toPosition);
 
                             System.out.println("Changed king position to " + move.toPosition);
                         }
@@ -94,7 +94,7 @@ public class Game {
 
     public boolean getAiMove(){
         if(aiGame){
-            Move best = minimax.getBestMove(chessboard,3);
+            Move best = minimax.getBestMove(chessboard,5);
             System.out.println("BEST MOVE EVEN: " + best);
             chessboard = best.make();
             chessboard.printChessboard();
@@ -137,8 +137,8 @@ public class Game {
         if (status == GameStatus.WHITE_ON_MOVE || status == GameStatus.BLACK_ON_MOVE) {
             TreeSet<Position> destinations = new TreeSet<>();
             for (Move move : possibleMoves){
-                if(move.movingPiece.position.equals(forPieceAt)){
-                    destinations.add(move.toPosition);
+                if(move.movingPiece.position == forPieceAt.to1D()){
+                    destinations.add(Position.from1D(move.toPosition));
                 }
             }
             System.out.println("Selected piece has " + destinations.size() + " possible moves");

@@ -15,17 +15,17 @@ public class Move {
 
     public final Chessboard chessboard;
     public final Piece movingPiece;
-    public final Position toPosition;
+    public final byte toPosition;
     public final MoveType type;
 
-    public Move(Chessboard chessboard, Piece movingPiece, Position toPosition, MoveType type) {
+    public Move(Chessboard chessboard, Piece movingPiece, byte toPosition, MoveType type) {
         this.chessboard = chessboard;
         this.movingPiece = movingPiece;
         this.toPosition = toPosition;
         this.type = type;
     }
 
-    public Move(Chessboard chessboard, Piece movingPiece, Position toPosition){
+    public Move(Chessboard chessboard, Piece movingPiece, byte toPosition){
         this.chessboard = chessboard;
         this.movingPiece = movingPiece;
         this.toPosition = toPosition;
@@ -48,7 +48,7 @@ public class Move {
         }
 
         if(this.type == MoveType.PAWN_DOUBLE_JUMP){
-            builder.setEnpassantPosition(this.toPosition.to1D());
+            builder.setEnpassantPosition(this.toPosition);
         }else if(this.type == MoveType.CASTLING || this.movingPiece.type == PieceType.KING){
             if(chessboard.getOnMove() == PieceColor.WHITE){
                 builder.setWhiteKingsideCastling(false);
@@ -76,15 +76,15 @@ public class Move {
     protected void updateCastlings(Chessboard.BoardBuilder builder){
 
         if(chessboard.getOnMove() == PieceColor.WHITE){
-            if(movingPiece.position.equals(Position.get(7,7)))
+            if(movingPiece.position == 63)
                 builder.setWhiteKingsideCastling(false);
-            else if(movingPiece.position.equals(Position.get(0,7))){
+            else if(movingPiece.position == 56){
                 builder.setWhiteQueensideCastling(false);
             }
         }else{
-            if(movingPiece.position.equals(Position.get(7,0)))
+            if(movingPiece.position == 7)
                 builder.setBlackKingsideCastling(false);
-            else if(movingPiece.position.equals(Position.get(0,0))){
+            else if(movingPiece.position == 0){
                 builder.setBlackQueensideCastling(false);
             }
         }
@@ -106,7 +106,7 @@ public class Move {
     @Override
     public int hashCode() {
         int result = movingPiece.hashCode();
-        result = 31 * result + toPosition.hashCode();
+        result = 31 * result + toPosition;
         result = 31 * result + type.hashCode();
         return result;
     }

@@ -34,7 +34,9 @@ public class Minimax implements AiStrategy{
         System.out.println("Minimax started with depth " + depth);
         for(Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
             Chessboard futureBoard = move.make();
-            double current = chessboard.getOnMove() == PieceColor.WHITE ? min(futureBoard, depth-1) : max(futureBoard, depth-1);
+            double current = chessboard.getOnMove() == PieceColor.WHITE ?
+                    alfabeta(depth-1, futureBoard, -500000, 500000, false)
+                    : alfabeta(depth-1,futureBoard, -500000, 500000, true);
             if(chessboard.getOnMove() == PieceColor.WHITE && current >= best){
 
                 best = current;
@@ -84,6 +86,37 @@ public class Minimax implements AiStrategy{
 
 
         return best;
+    }
+
+    public double alfabeta(int depth, Chessboard chessboard, double alfa, double beta, boolean max){
+
+        if(depth == 0){
+            return evaluator.evaluate(chessboard, depth);
+        }
+        if(max){
+            double current = -500000;
+            for (Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
+                Chessboard futureBoard = move.make();
+                current =Math.max(current, alfabeta(depth-1, futureBoard, alfa, beta, !max));
+                alfa = Math.max(alfa, current);
+                if(beta <=alfa)
+                    break;
+
+            }
+            return alfa;
+        }else {
+            double current = 500000;
+            for (Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
+                Chessboard futureBoard = move.make();
+                current =Math.min(current, alfabeta(depth-1, futureBoard, alfa, beta, !max));
+                beta = Math.min(beta, current);
+                if(beta <=alfa)
+                    break;
+
+            }
+            return beta;
+        }
+
     }
 
 

@@ -14,27 +14,27 @@ import java.util.List;
  */
 public class Piece implements Serializable{
 
-    public final Position position;
+    public final byte position;
     public final PieceColor color;
     public final PieceType type;
     protected List<Move> possibleMoves;
 
-    public Piece(final int position, final PieceType type, final PieceColor color) {
-        this.position = Position.from1D(position);
-        this.color = color;
-        this.type = type;
-        this.possibleMoves = new ArrayList<>();
-    }
-
-    public Piece(Position position, final PieceType type, final PieceColor color) {
+    public Piece(final byte position, final PieceType type, final PieceColor color) {
         this.position = position;
         this.color = color;
         this.type = type;
         this.possibleMoves = new ArrayList<>();
     }
 
+    public Piece(Position position, final PieceType type, final PieceColor color) {
+        this.position = position.to1D();
+        this.color = color;
+        this.type = type;
+        this.possibleMoves = new ArrayList<>();
+    }
+
     public Piece(final PieceType type, final PieceColor color){
-        this.position = null;
+        this.position = -1;
         this.type =type;
         this.color = color;
     }
@@ -43,11 +43,11 @@ public class Piece implements Serializable{
         return new Piece(position, this.type, this.color);
     }
 
-    public Piece withPosition(int position){
+    public Piece withPosition(byte position){
         return new Piece(position, this.type, this.color);
     }
 
-    public static Piece getPieceByIdAndPosition(int position, int id){
+    public static Piece getPieceByIdAndPosition(byte position, int id){
         switch (id){
             case 1:
                 return new Piece(position, PieceType.PAWN, PieceColor.WHITE);
@@ -97,14 +97,14 @@ public class Piece implements Serializable{
 
         Piece piece = (Piece) o;
 
-        if (!position.equals(piece.position)) return false;
+        if (position != piece.position) return false;
         if (color != piece.color) return false;
         return type == piece.type;
     }
 
     @Override
     public int hashCode() {
-        int result = position.hashCode();
+        int result = position;
         result = 31 * result + color.hashCode();
         result = 31 * result + type.hashCode();
         return result;
