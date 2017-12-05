@@ -1,29 +1,28 @@
 package core_v2.Moves;
 
-
 import core_v2.Chessboards.Chessboard;
-import core_v2.Pieces.FinalPiece;
 import core_v2.Pieces.Piece;
 import core_v2.Pieces.PieceColor;
+import core_v2.Pieces.PieceType;
 import core_v2.Utils.PieceList;
-import core_v2.Utils.Position;
 
 /**
  * Created by Filip on 11/21/2017.
  */
-public class EnpassantMove extends Move{
-    public final Piece eatenPawn;
+public class CaptureMove extends Move {
 
-    public EnpassantMove(Chessboard chessboard, Piece movingPiece, int toPosition, Piece eatenPawn) {
-        super(chessboard, movingPiece, toPosition, MoveType.ENPASSANT);
-        this.eatenPawn = eatenPawn;
+    public final Piece eatenPiece;
+
+    public CaptureMove(final Chessboard chessboard, final Piece movingPiece, final Piece eatenPiece) {
+        super(chessboard, movingPiece, eatenPiece.position, eatenPiece.type == PieceType.KING ? MoveType.CHECKMATE : MoveType.CAPTURE);
+
+        this.eatenPiece = eatenPiece;
     }
-
 
     @Override
     public Chessboard execute() {
         if(this.movingPiece.color != chessboard.getOnMove())
-            return this.chessboard;
+            return chessboard;
 
         Chessboard.BoardBuilder boardBuilder = new Chessboard.BoardBuilder();
         PieceList activePieces = chessboard.getActivePieces();
@@ -31,23 +30,22 @@ public class EnpassantMove extends Move{
 
         boardBuilder.setOnMove(nextOnmove)
                 .addPieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
-                .addPieces(chessboard.getTargetPieces().without(eatenPawn),nextOnmove)
+                .addPieces(chessboard.getTargetPieces().without(eatenPiece),nextOnmove)
                 .setWhiteCastled(chessboard.getWhitePlayer().isCastled())
                 .setBlackCastled(chessboard.getBlackPlayer().isCastled());
-
 
         return boardBuilder.create();
     }
 
+
     @Override
     public String toString() {
-        return "EnpassantMove{" +
-                "eatenPawn=" + eatenPawn +
+        return "AttackMove{" +
+                "eatenPiece=" + eatenPiece +
                 ", movingPiece=" + movingPiece +
                 ", toPosition=" + to +
+                "eatenPiece=" + eatenPiece +
                 ", type=" + type +
                 '}';
     }
-
-
 }

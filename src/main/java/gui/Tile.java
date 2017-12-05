@@ -11,20 +11,22 @@ import javafx.scene.image.ImageView;
  */
 public class Tile extends Button {
 
-    public final Position POSITION;
+    public final int POSITION;
     private String piece;
     private boolean selected;
     private boolean occupied;
     private boolean checked;
-    public Tile(Position position){
+    private boolean possible;
+    public Tile(int position){
         this(position, "");
     }
 
-    public Tile(Position position, String piece){
+    public Tile(int position, String piece){
         super();
         this.POSITION = position;
         this.selected = false;
         this.checked = false;
+        this.possible = false;
         setPrefHeight(80);
         setPrefWidth(80);
         this.getStyleClass().add("tile-style");
@@ -43,10 +45,15 @@ public class Tile extends Button {
     }
 
     public void markAsPossibleMove(boolean possible){
+        this.possible = possible;
         if(possible)
             this.getStyleClass().add("tile-possible");
         else
             this.getStyleClass().remove("tile-possible");
+    }
+
+    public boolean isPossible(){
+        return this.possible;
     }
 
     public void removePossibleMark(){
@@ -125,13 +132,10 @@ public class Tile extends Button {
 
         Tile tile = (Tile) o;
 
-        return POSITION.equals(tile.POSITION);
+        return POSITION ==tile.POSITION;
     }
 
-    @Override
-    public int hashCode() {
-        return POSITION.hashCode();
-    }
+
 
     @Override
     public String toString() {

@@ -1,7 +1,5 @@
 package gui;
 
-import core_v2.Pieces.Piece;
-import core_v2.Utils.Position;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,15 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.util.Set;
-
 /**
  * Created by Filip on 11/28/2017.
  */
 public class ChessboardComponent {
     private final GridPane parent;
     private final GridPane grid;
-    private final Tile[][] chessboard = new Tile[8][8];
+    private final Tile[] chessboard = new Tile[64];
+    private Tile checkedTile = null;
 
     public ChessboardComponent() {
 
@@ -29,7 +26,7 @@ public class ChessboardComponent {
         grid.getStyleClass().add("chessboard-grid");
     }
 
-    public void initWithStartingPositions(String[][] chessboard, EventHandler<ActionEvent> eventHandler) {
+    public void initWithStartingPositions(String[] chessboard, EventHandler<ActionEvent> eventHandler) {
 
         for (int i = 0; i < 8; i++) {
             char c = 'A';
@@ -43,47 +40,55 @@ public class ChessboardComponent {
             parent.add(lblNumbers, 0, i + 1);
 
         }
-        for (int j = 0; j < 8; j++) {
-            for (int i = 0; i < 8; i++) {
-
-                Tile tile = new Tile( Position.get(i, j));
-                tile.setPiece(chessboard[i][j]);
-                if ((i + j) % 2 == 0) {
-                    tile.setColor("white");
-                } else {
-                    tile.setColor("black");
-                }
-                tile.setOnAction(eventHandler);
-                this.chessboard[i][j] = tile;
-                grid.add(tile, i, j);
-
+        for (int i = 0; i < 64; i++) {
+            Tile tile = new Tile(i);
+            tile.setPiece(chessboard[i]);
+            if (((i % 8) +( i / 8))% 2 == 0) {
+                tile.setColor("white");
+            } else {
+                tile.setColor("black");
             }
+            tile.setOnAction(eventHandler);
+            this.chessboard[i] = tile;
+            grid.add(tile, i % 8, i / 8);
+
         }
+
         parent.add(grid, 1, 1, 9, 9);
     }
 
-    public void updateTiles(String[][] chessboard){
-        grid.getChildren().forEach( t -> {
+
+
+    public void updateTiles(String[] chessboard) {
+        grid.getChildren().forEach(t -> {
             Tile tile = (Tile) t;
-            tile.setPiece(chessboard[tile.POSITION.X][tile.POSITION.Y]);
+            tile.setPiece(chessboard[tile.POSITION]);
         });
     }
 
-    public void setChecked(Position kingPosition, boolean checked){
-        chessboard[kingPosition.X][kingPosition.Y].setChecked(checked);
+    public void removeChecked(){
+        if(this.checkedTile != null)
+            this.checkedTile.setChecked(false);
+        this.checkedTile = null;
+    }
+
+    public void setChecked(int kingPosition) {
+        this.checkedTile = chessboard[kingPosition];
+        this.checkedTile.setChecked(true);
     }
 
 
-    public void setPossibleMoves(Set<Position> positions) {
-        positions.forEach(position -> {
-            chessboard[position.X][position.Y].markAsPossibleMove(true);
-        });
+    public void setPossibleMoves(int[] possibleMoves) {
+        for (int i = 0; i < possibleMoves.length; i++) {
+            chessboard[possibleMoves[i]].markAsPossibleMove(true);
+        }
+
     }
 
-    public void removePossibleMoves(Set<Position> positions) {
-        positions.forEach(position -> {
-            chessboard[position.X][position.Y].markAsPossibleMove(false);
-        });
+    public void removePossibleMoves(int[] possibleMoves) {
+        for (int i = 0; i < possibleMoves.length; i++) {
+            chessboard[possibleMoves[i]].markAsPossibleMove(false);
+        }
     }
 
 

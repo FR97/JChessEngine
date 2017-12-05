@@ -52,7 +52,7 @@ public class Chessboard {
         PIECES.put(Position.get(5, 7), Piece.WhiteBishop);
         PIECES.put(Position.get(3, 7), Piece.WhiteQueen);
         PIECES.put(Position.get(4, 7), Piece.WhiteKing);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8/*7 for test*/; i++) {
             PIECES.put(Position.get(i, 6), Piece.WhitePawn);
         }
 

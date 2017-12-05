@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="core.GameTest" time="0.098" errors="0" skipped="0">
+<testsuite tests="11" failures="0" name="core_v2.Chessboards.ChessboardTest" time="0.024" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2017.1.2"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -61,7 +61,15 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="core.GameTest" name="testCastling" time="0.002"/>
-  <testcase classname="core.GameTest" name="testKingInDanger" time="0"/>
-  <testcase classname="core.GameTest" name="testAi" time="0.096"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getPieceAsByte" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getPiece" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getActivePieces" time="0.02"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getTargetPieces" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getOnMove" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="isWhiteQueensideCastlingPossible" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="isWhiteKingsideCastlingPossible" time="0.004"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="isEnpassantPossible" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="getEnpassantPawnPosition" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="isBlackKingsideCastlingPossible" time="0"/>
+  <testcase classname="core_v2.Chessboards.ChessboardTest" name="isBlackQueensideCastlingPossible" time="0"/>
 </testsuite>

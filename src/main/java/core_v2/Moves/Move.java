@@ -1,11 +1,10 @@
 package core_v2.Moves;
 
 import core_v2.Chessboards.Chessboard;
-import core_v2.Game;
+import core_v2.Pieces.FinalPiece;
 import core_v2.Pieces.Piece;
 import core_v2.Pieces.PieceColor;
-import core_v2.Pieces.PieceType;
-import core_v2.Utils.Position;
+import core_v2.Utils.PieceList;
 
 
 /**
@@ -13,81 +12,43 @@ import core_v2.Utils.Position;
  */
 public class Move {
 
-    public final Chessboard chessboard;
+    protected final Chessboard chessboard;
     public final Piece movingPiece;
-    public final byte toPosition;
+    public final int to;
     public final MoveType type;
 
-    public Move(Chessboard chessboard, Piece movingPiece, byte toPosition, MoveType type) {
+    public Move(final Chessboard chessboard, final Piece movingPiece, final int to) {
         this.chessboard = chessboard;
+        this.to = to;
         this.movingPiece = movingPiece;
-        this.toPosition = toPosition;
+        this.type = MoveType.NORMAL;
+
+    }
+
+    public Move(final Chessboard chessboard, final Piece movingPiece, final int to, final MoveType type) {
+        this.chessboard = chessboard;
+        this.to = to;
+        this.movingPiece = movingPiece;
         this.type = type;
     }
 
-    public Move(Chessboard chessboard, Piece movingPiece, byte toPosition){
-        this.chessboard = chessboard;
-        this.movingPiece = movingPiece;
-        this.toPosition = toPosition;
-        this.type = MoveType.NORMAL;
-    }
+    public Chessboard execute(){
 
+        if(this.movingPiece.color != chessboard.getOnMove())
+            return this.chessboard;
 
-    public Chessboard make(){
+        Chessboard.BoardBuilder boardBuilder = new Chessboard.BoardBuilder();
+        PieceList activePieces = chessboard.getActivePieces();
+        PieceColor nextOnmove = this.chessboard.getOnMove().isWhite()? PieceColor.BLACK : PieceColor.WHITE;
 
-        Chessboard.BoardBuilder builder = new Chessboard.BoardBuilder();
+        boardBuilder.setOnMove(nextOnmove)
+                .addPieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
+                .addPieces(chessboard.getTargetPieces(),nextOnmove)
+                .setEnpassantPosition(this.type == MoveType.PAWN_DOUBLE_JUMP ? to : -1)
+                .setWhiteCastled(chessboard.getWhitePlayer().isCastled())
+                .setBlackCastled(chessboard.getBlackPlayer().isCastled());
 
-        for(Piece piece : this.chessboard.getActivePieces()){
-            if(!this.movingPiece.equals(piece))
-                builder.setPiece(piece);
-            else{
-                if(Game.DEBUG_MODE)
-                    System.out.println("This piece will be moved " + piece + " from " + piece.position + " to " + this.toPosition);
-            }
-
-        }
-
-        if(this.type == MoveType.PAWN_DOUBLE_JUMP){
-            builder.setEnpassantPosition(this.toPosition);
-        }else if(this.type == MoveType.CASTLING || this.movingPiece.type == PieceType.KING){
-            if(chessboard.getOnMove() == PieceColor.WHITE){
-                builder.setWhiteKingsideCastling(false);
-                builder.setWhiteQueensideCastling(false);
-            }else{
-                builder.setBlackKingsideCastling(false);
-                builder.setBlackQueensideCastling(false);
-            }
-        }
-
-
-        for(Piece targetPieces : chessboard.getTargetPieces()){
-            builder.setPiece(targetPieces);
-        }
-
-        updateCastlings(builder);
-
-        builder.setPiece(this.movingPiece.withPosition(this.toPosition));
-
-        builder.setOnMove(this.chessboard.getOnMove() == PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE);
-
-        return builder.build();
-    }
-
-    protected void updateCastlings(Chessboard.BoardBuilder builder){
-
-        if(chessboard.getOnMove() == PieceColor.WHITE){
-            if(movingPiece.position == 63)
-                builder.setWhiteKingsideCastling(false);
-            else if(movingPiece.position == 56){
-                builder.setWhiteQueensideCastling(false);
-            }
-        }else{
-            if(movingPiece.position == 7)
-                builder.setBlackKingsideCastling(false);
-            else if(movingPiece.position == 0){
-                builder.setBlackQueensideCastling(false);
-            }
-        }
+        return boardBuilder.create();
     }
 
     public Chessboard undo(){
@@ -95,19 +56,30 @@ public class Move {
     }
 
     @Override
-    public String toString() {
-        return "Move{" +
-                "movingPiece=" + movingPiece +
-                ", toPosition=" + toPosition +
-                ", type=" + type +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Move move = (Move) o;
+
+        if (to != move.to) return false;
+        if (!movingPiece.equals(move.movingPiece)) return false;
+        return type == move.type;
     }
 
     @Override
     public int hashCode() {
         int result = movingPiece.hashCode();
-        result = 31 * result + toPosition;
+        result = 31 * result + to;
         result = 31 * result + type.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "to=" + to +
+                ", movingPiece=" + movingPiece +
+                '}';
     }
 }

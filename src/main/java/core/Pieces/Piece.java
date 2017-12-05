@@ -7,6 +7,7 @@ public final class Piece {
     public final PieceColor COLOR;
     public final PieceType TYPE;
 
+
     private Piece(PieceType type,PieceColor color) {
 
         this.COLOR = color;

@@ -7,6 +7,7 @@ import gui.ChessboardComponent;
 import gui.GameController;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -25,14 +26,23 @@ public class Main extends Application {
 
         BorderPane root = new BorderPane();
         HBox root1 = new HBox();
-        Game game = new Game(true);
+        Game game = new Game();
         ChessboardComponent cbc = new ChessboardComponent();
         GameController cbcontroller = new GameController(game, cbc);
+
+        Button btnUndo = new Button("Undo");
+
+        btnUndo.setOnAction( event -> {
+            game.undoLastMove();
+            cbc.updateTiles(game.boardAsArray());
+        });
+
         root.setTop(new Label("JavaFXChess"));
         root.setCenter(cbc.getComponentNode());
 
         root1.getChildren().add(new Label("JavaFXChess"));
         root1.getChildren().add(cbc.getComponentNode());
+        root1.getChildren().add(btnUndo);
 
         Scene scene = new Scene(root1, 1000, 800);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("css/style.css").toExternalForm());

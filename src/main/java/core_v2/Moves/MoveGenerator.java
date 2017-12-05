@@ -1,291 +1,185 @@
 package core_v2.Moves;
 
 import core_v2.Chessboards.Chessboard;
-import core_v2.Game;
 import core_v2.Pieces.Piece;
-import core_v2.Pieces.PieceColor;
-import core_v2.Utils.Position;
+import core_v2.Pieces.PieceType;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-
 /**
- * Created by Filip on 11/19/2017.
+ * Created by Filip on 12/2/2017.
  */
 public class MoveGenerator {
 
+    private static final int[] mailbox = {
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, 0, 1, 2, 3, 4, 5, 6, 7, -1,
+            -1, 8, 9, 10, 11, 12, 13, 14, 15, -1,
+            -1, 16, 17, 18, 19, 20, 21, 22, 23, -1,
+            -1, 24, 25, 26, 27, 28, 29, 30, 31, -1,
+            -1, 32, 33, 34, 35, 36, 37, 38, 39, -1,
+            -1, 40, 41, 42, 43, 44, 45, 46, 47, -1,
+            -1, 48, 49, 50, 51, 52, 53, 54, 55, -1,
+            -1, 56, 57, 58, 59, 60, 61, 62, 63, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+    };
 
-    public MoveGenerator() {
+    private static final int[] mailbox64 = {
+            21, 22, 23, 24, 25, 26, 27, 28,
+            31, 32, 33, 34, 35, 36, 37, 38,
+            41, 42, 43, 44, 45, 46, 47, 48,
+            51, 52, 53, 54, 55, 56, 57, 58,
+            61, 62, 63, 64, 65, 66, 67, 68,
+            71, 72, 73, 74, 75, 76, 77, 78,
+            81, 82, 83, 84, 85, 86, 87, 88,
+            91, 92, 93, 94, 95, 96, 97, 98
+    };
 
-    }
+    private static final int[][] offsets = {
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {-11, -10, -9, -1, 1, 9, 10, 11},
+            {-21, -19, -12, -8, 8, 12, 19, 21},
+            {-10, -1, 1, 10, 0, 0, 0, 0},
+            {-11, -9, 9, 11, 0, 0, 0, 0},
+            {-11, -10, -9, -1, 1, 9, 10, 11},
 
-    public static List<Move> getAllPossibleMoves(Chessboard chessboard, boolean activePieces) {
-        List<Move> moves = new ArrayList<>();
-        if (activePieces) {
-            for (Piece piece : chessboard.getActivePieces()) {
-                moves.addAll(getPossibleMovesForPiece(piece, chessboard));
-            }
-        } else {
-            for (Piece piece : chessboard.getTargetPieces()) {
-                moves.addAll(getPossibleMovesForPiece(piece, chessboard));
-            }
+    };
+
+    public static List<Move> findPossibleMoves(final Piece piece,final Chessboard chessboard) {
+       // System.out.println("Finding possible moves for " + piece);
+        if (piece.type == PieceType.PAWN) {
+
+            return findPossibleMovesForPawn(piece, chessboard);
         }
-        for (Iterator<Move> i = moves.iterator(); i.hasNext(); ) {
-            Move m = i.next();
-            if (isMoveDangerous(m)) {
-                i.remove();
-            }
-        }
-
-        return moves;
-    }
-
-    public static boolean isKingInCheck(Chessboard chessboard) {
+        //int from = piece.position;
+        int id = piece.type.id();
         List<Move> moves = new ArrayList<>();
-        for (Piece piece : chessboard.getTargetPieces()) {
-            for (Move move : getPossibleMovesForPiece(piece, chessboard)) {
-                if (move.type == MoveType.CHECKMATE) {
-                    return true;
+        //System.out.println(offsets[2][5]);
+        //System.out.println("From is " + mailbox64[from]);
+
+        for (int i = 0; (i < 8 && offsets[id][i] != 0); i++) {
+            // System.out.println("offset is " + offsets[id][i] + " from is" +mailbox64[from]);
+            int possible = mailbox[mailbox64[piece.position] + offsets[id][i]];
+
+            if (id > 2) { // Za topa, lovca i kraljicu
+                while (possible != -1) {
+                    //System.out.println("Pos is " + possible + " in normal " + mailbox[possible]);
+
+                    Piece toEat = chessboard.getPiece(possible);
+                    // System.out.println(toEat);
+                    if (toEat == null) {
+                        moves.add(new Move(chessboard, piece, possible));
+                    } else if (piece.color != toEat.color) {
+                        moves.add(new CaptureMove(chessboard, piece, toEat));
+                        break;
+                    } else {
+                        break;
+                    }
+                    possible = mailbox[mailbox64[possible] + offsets[id][i]];
                 }
+            } else { // Za kralja i konja
+                if (possible != -1) {
+                    Piece toEat = chessboard.getPiece(possible);
+                    if (toEat == null) {
+                        moves.add(new Move(chessboard, piece, possible));
+                    } else if (piece.color != toEat.color) {
+                        moves.add(new CaptureMove(chessboard, piece, toEat));
+                    }
+                }
+
             }
         }
-        return false;
-    }
 
-    public static List<Move> getPossibleMovesForPiece(Piece piece, Chessboard chessboard) {
-
-        List<Move> moves = new ArrayList<>();
+        if (piece.type == PieceType.KING)
+            addPossibleCastlings(piece, chessboard, moves);
 
 
-        if (Game.DEBUG_MODE)
-            System.out.println("Finding possible moves for " + piece + " at " + piece.position);
+     //   System.out.println("Found " + moves.size() + " possible moves");
 
-        switch (piece.type) {
-            case PAWN:
-                moves.addAll(getPossibleMovesForPawn(piece, chessboard));
-                break;
-            case ROOK:
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, 0));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, 0));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 0, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 0, -1));
-                break;
-            case KNIGHT:
-                moves.addAll(getPossibleMovesForOffsets(piece, chessboard, Position.KNIGHT_OFFSETS));
-                break;
-            case BISHOP:
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, -1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, -1));
-                break;
-            case QUEEN:
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, 0));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, 0));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 0, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 0, -1));
-
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, 1, -1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, 1));
-                moves.addAll(getPossibleMovesInDirection(piece, chessboard, -1, -1));
-                break;
-            case KING:
-                moves.addAll(getPossibleMovesForOffsets(piece, chessboard, Position.KING_OFFSETS));
-                moves.addAll(getPossibleCastlings(piece, chessboard));
-                break;
-        }
-        if (Game.DEBUG_MODE)
-            System.out.println("Found " + moves.size() + " possible moves");
         return moves;
 
     }
 
+    private static List<Move> addPossibleCastlings(final Piece king,final Chessboard chessboard,final List<Move> moves) {
 
-    public static List<Move> getPossibleMovesForOffsets(Piece movingPiece, Chessboard chessboard, Position[] offsets) {
-
-        List<Move> moves = new ArrayList<>();
-
-        for (Position offset : offsets) {
-            Position toPosition = Position.withOffsets(Position.from1D(movingPiece.position), offset.X, offset.Y);
-            if (toPosition != null) {
-                Piece eatenPiece = chessboard.getPiece(toPosition.to1D());
-                if (eatenPiece == null)
-                    moves.add(new Move(chessboard, movingPiece, toPosition.to1D()));
-                else if (movingPiece.color != eatenPiece.color)
-                    moves.add(new AttackMove(chessboard, movingPiece, eatenPiece));
-            }
-        }
-
-
-        return moves;
-    }
-
-    public static List<Move> getPossibleMovesInDirection(Piece movingPiece, Chessboard chessboard, int xDirection, int yDirection) {
-
-        List<Move> moves = new ArrayList<>();
-        int x = xDirection, y = yDirection;
-
-        int i = 1;
-
-        while (i < 8) {
-            Position toPosition = Position.withOffsets(Position.from1D(movingPiece.position), x * i, y * i);
-            if (toPosition != null) {
-                Piece eatenPiece = chessboard.getPiece(toPosition.to1D());
-                if (eatenPiece == null) {
-                    moves.add(new Move(chessboard, movingPiece, toPosition.to1D()));
-
-                } else if (movingPiece.color != eatenPiece.color) {
-                    moves.add(new AttackMove(chessboard, movingPiece, eatenPiece));
-                    break;
-                } else {
-                    break;
+        if (!king.moved) {
+            if (king.color.isWhite()) {
+                Piece rook = chessboard.getPiece(63);
+                if (rook != null && !rook.moved) {
+                    if (chessboard.getPiece(62) == null && chessboard.getPiece(61) == null)
+                        moves.add(new CastlingMove(chessboard, king, 62, rook, 61));
+                }
+                rook = chessboard.getPiece(56);
+                if (rook != null && !rook.moved) {
+                    if (chessboard.getPiece(57) == null && chessboard.getPiece(58) == null && chessboard.getPiece(59) == null)
+                        moves.add(new CastlingMove(chessboard, king, 58, rook, 59));
                 }
             } else {
-                break;
+                Piece rook = chessboard.getPiece(7);
+                if (rook != null && !rook.moved) {
+                    if (chessboard.getPiece(5) == null && chessboard.getPiece(6) == null)
+                        moves.add(new CastlingMove(chessboard, king, 6, rook, 5));
+                }
+                rook = chessboard.getPiece(0);
+                if (rook != null && !rook.moved) {
+                    if (chessboard.getPiece(1) == null && chessboard.getPiece(2) == null && chessboard.getPiece(3) == null)
+                        moves.add(new CastlingMove(chessboard, king, 2, rook, 3));
+                }
             }
-            i++;
         }
 
         return moves;
+
     }
 
-    /*
-         0 |  1 |  2 |  3 |  4 |  5 |  6 |  7
-         8 |  9 | 10 | 11 | 12 | 13 | 14 | 15
-        16 | 17 | 18 | 19 | 20 | 21 | 22 | 23
-        24 | 25 | 26 | 27 | 28 | 29 | 30 | 31
-        32 | 33 | 34 | 35 | 36 | 37 | 38 | 39
-        40 | 41 | 42 | 43 | 44 | 45 | 46 | 47
-        48 | 49 | 50 | 51 | 52 | 53 | 54 | 55
-        56 | 57 | 58 | 59 | 60 | 61 | 62 | 63
-
-     */
-    public static List<Move> getPossibleMovesForPawn(Piece pawn, Chessboard chessboard) {
-
+    private static List<Move> findPossibleMovesForPawn(final Piece pawn, final Chessboard chessboard) {
         List<Move> moves = new ArrayList<>();
-        int yOffset = 8 * -pawn.color.value();
 
-        int possibleTo = pawn.position + yOffset;
-        // Da li moze napred
-        if (possibleTo >= 0 && possibleTo < 64 && chessboard.getPiece(possibleTo) == null) {
-            moves.add(new Move(chessboard, pawn, (byte) possibleTo));
-
-            // da li moze dupli skok
-            if (((pawn.position >= 48 && pawn.position <= 55) && yOffset < 0) || ((pawn.position >= 8 && pawn.position <= 15) && yOffset > 0)) {
-                possibleTo = pawn.position + yOffset * 2;
-                if (chessboard.getPiece(possibleTo) == null)
-                    moves.add(new Move(chessboard, pawn, (byte) possibleTo, MoveType.PAWN_DOUBLE_JUMP));
+        int direction = pawn.color.value() * -1;
+        // Polje ispred
+        int possible = mailbox[mailbox64[pawn.position] + 10 * direction];
+        if (possible != -1) {
+            //TODO promocija piuna
+            if (chessboard.getPiece(possible) == null) {
+                moves.add(new Move(chessboard, pawn, possible));
+                // Doubli skok
+                possible = mailbox[mailbox64[possible] + 10 * direction];
+                if (chessboard.getPiece(possible) == null && !pawn.moved)
+                    moves.add(new Move(chessboard, pawn, possible, MoveType.PAWN_DOUBLE_JUMP));
             }
         }
 
-        // Da li moze dijagonalno
-        possibleTo = pawn.position + 7 * -pawn.color.value();
-        if (possibleTo >= 0 && possibleTo < 64) {
-
-            if (!((FIRST_COLUMN[pawn.position] && pawn.color == PieceColor.BLACK) ||
-                    (EIGHT_COLUMN[pawn.position] && pawn.color == PieceColor.WHITE))) {
-
-                Piece pieceToEat = chessboard.getPiece(possibleTo);
-                if (pieceToEat != null && pawn.color != pieceToEat.color) {
-                    moves.add(new AttackMove(chessboard, pawn, pieceToEat));
-                }
-            }
-
-        }
-
-        possibleTo = pawn.position + 9 * -pawn.color.value();
-        if (possibleTo >= 0 && possibleTo < 64) {
-            if (!((FIRST_COLUMN[pawn.position] && pawn.color == PieceColor.WHITE) ||
-                    (EIGHT_COLUMN[pawn.position] && pawn.color == PieceColor.BLACK))) {
-
-                Piece pieceToEat = chessboard.getPiece(possibleTo);
-                if (pieceToEat != null && pawn.color != pieceToEat.color) {
-                    moves.add(new AttackMove(chessboard, pawn, pieceToEat));
-                }
-            }
-
-        }
-
-        /*
-        // Da li moze dijagonalno
-        possibleTo = pawn.position + (yOffset + 1);
-        if (possibleTo >= 0 && possibleTo < 64) {
-            Piece pieceToEat = chessboard.getPiece(possibleTo);
-            if (pieceToEat != null && pawn.color != pieceToEat.color) {
-                moves.add(new AttackMove(chessboard, pawn, pieceToEat));
+        // Napadi po dijagonalama
+        possible = mailbox[mailbox64[pawn.position] + 10 * direction - 1];
+        if (possible != -1) {
+            Piece toEat = chessboard.getPiece(possible);
+            if (toEat != null && pawn.color != toEat.color) {
+                moves.add(new CaptureMove(chessboard, pawn, toEat));
             }
         }
-        */
-        // Da li moze enpassant
+        possible = mailbox[mailbox64[pawn.position] + 10 * direction + 1];
+        if (possible != -1) {
+            Piece toEat = chessboard.getPiece(possible);
+            if (toEat != null && pawn.color != toEat.color) {
+                moves.add(new CaptureMove(chessboard, pawn, toEat));
+            }
+        }
+
+        // Enpassant
         if (chessboard.isEnpassantPossible()) {
-            Position pawnToEatPosition = Position.from1D(chessboard.getEnpassantPawnPosition());
-            Position movingPawnPosition = Position.from1D(pawn.position);
-            if (chessboard.getEnpassantPawnPosition() > -1 && movingPawnPosition.Y == pawnToEatPosition.Y) {
-                if (movingPawnPosition.X - 1 == pawnToEatPosition.X || movingPawnPosition.X + 1 == pawnToEatPosition.X) {
-                    moves.add(new EnpassantMove(chessboard, pawn, (byte) (pawnToEatPosition.to1D() + yOffset), chessboard.getPiece(pawnToEatPosition.to1D())));
-                }
+            int enpassantPawnPosition = mailbox[mailbox64[chessboard.getEnpassantPawnPosition()]];
+            if (mailbox[mailbox64[pawn.position - 1]] == enpassantPawnPosition) {
+                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position - 1] + 10 * direction], chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
+            } else if (mailbox[mailbox64[pawn.position + 1]] == enpassantPawnPosition) {
+                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position + 1] + 10 * direction], chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
             }
         }
 
+       // System.out.println("Found " + moves.size() + " possible moves");
         return moves;
     }
-
-    public static List<Move> getPossibleCastlings(Piece king, Chessboard chessboard) {
-
-        List<Move> moves = new ArrayList<>();
-        if (king.color == PieceColor.WHITE) {
-            if (chessboard.isWhiteKingsideCastlingPossible() && chessboard.getPieceAsByte(63) == 2) {
-                if (chessboard.getPieceAsByte(62) == 0 && chessboard.getPieceAsByte(61) == 0)
-                    moves.add(new CastlingMove(chessboard, king, Position.get(6, 7).to1D(), chessboard.getPiece(63), Position.get(5, 7).to1D()));
-            } else if (chessboard.isWhiteQueensideCastlingPossible() && chessboard.getPieceAsByte(56) == 2) {
-                if (chessboard.getPieceAsByte(57) == 0 && chessboard.getPieceAsByte(58) == 0 && chessboard.getPieceAsByte(59) == 0)
-                    moves.add(new CastlingMove(chessboard, king, Position.get(2, 7).to1D(), chessboard.getPiece(56), Position.get(3, 7).to1D()));
-            }
-        } else {
-            if (chessboard.isBlackKingsideCastlingPossible() && chessboard.getPieceAsByte(7) == -2) {
-                if (chessboard.getPieceAsByte(6) == 0 && chessboard.getPieceAsByte(5) == 0)
-                    moves.add(new CastlingMove(chessboard, king, Position.get(6, 0).to1D(), chessboard.getPiece(7), Position.get(5, 0).to1D()));
-            } else if (chessboard.isBlackQueensideCastlingPossible() && chessboard.getPieceAsByte(0) == -2) {
-                if (chessboard.getPieceAsByte(1) == 0 && chessboard.getPieceAsByte(2) == 0 && chessboard.getPieceAsByte(3) == 0)
-                    moves.add(new CastlingMove(chessboard, king, Position.get(2, 0).to1D(), chessboard.getPiece(0), Position.get(3, 0).to1D()));
-            }
-        }
-
-        return moves;
-    }
-
-    public static boolean isMoveDangerous(Move move) {
-        Chessboard chessboard = move.make();
-        for (Piece piece : chessboard.getActivePieces()) {
-            for (Move m : getPossibleMovesForPiece(piece, chessboard)) {
-                if (m.type == MoveType.CHECKMATE) {
-                    return true;
-                }
-
-            }
-        }
-
-        return false;
-    }
-
-    public static final boolean[] FIRST_COLUMN = initColumn(0);
-    public static final boolean[] EIGHT_COLUMN = initColumn(7);
-
-    private static boolean[] initColumn(int columnNumber) {
-        final boolean[] column = new boolean[64];
-        for (int i = 0; i < column.length; i++) {
-            column[i] = false;
-        }
-        do {
-            column[columnNumber] = true;
-            columnNumber += 8;
-        } while (columnNumber < 64);
-
-        return column;
-    }
-
 
 }

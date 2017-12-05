@@ -1,6 +1,15 @@
 package core_v2.Chessboards;
 
+
+import core_v2.Moves.Move;
+import core_v2.Moves.CaptureMove;
+import core_v2.Pieces.Piece;
+import core_v2.Pieces.PieceColor;
+import core_v2.Pieces.PieceType;
 import org.junit.Test;
+
+import java.time.Duration;
+import java.time.Instant;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +19,23 @@ import static org.junit.Assert.*;
 public class ChessboardTest {
     @Test
     public void getActivePieces() throws Exception {
+        int sum = 0;
+        Instant start = Instant.now();
+        Chessboard cb = new Chessboard();
+/*
+        cb.print();
+        System.out.println(cb.getPiece(6).toString());
+        Move move = new CaptureMove(cb.getActivePieces().get(0), cb.getPiece(6));
+        move.execute(cb);
+        cb.print();
+        move.undo(cb);
+        System.out.println(cb.getPiece(6).toString());
+        cb.print();
+        Instant end = Instant.now();
+
+        System.out.println(Duration.between(start,end).toMillis());
+*/
+
     }
 
     @Test

@@ -1,24 +1,20 @@
 package core_v2.AiStrategies;
 
 
-
 import core_v2.Chessboards.Chessboard;
 import core_v2.Evaluators.Evaluator;
 import core_v2.Moves.Move;
-import core_v2.Moves.MoveGenerator;
-import core_v2.Pieces.PieceColor;
 
-import java.time.Duration;
-import java.time.Instant;
 
 /**
  * Created by Filip on 11/28/2017.
  */
-public class Minimax implements AiStrategy{
+public class Minimax implements AiStrategy {
 
     private Evaluator evaluator;
     private Move bestMove;
-    public Minimax(Evaluator evaluator){
+
+    public Minimax(Evaluator evaluator) {
         this.evaluator = evaluator;
 
     }
@@ -26,97 +22,67 @@ public class Minimax implements AiStrategy{
 
     @Override
     public Move getBestMove(Chessboard chessboard, int depth) {
-        Instant start = Instant.now();
         Move bestMove = null;
-        double value = 0;
         double best = -500000;
-        double worst = 500000;
-        System.out.println("Minimax started with depth " + depth);
-        for(Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
-            Chessboard futureBoard = move.make();
-            double current = chessboard.getOnMove() == PieceColor.WHITE ?
-                    alfabeta(depth-1, futureBoard, -500000, 500000, false)
-                    : alfabeta(depth-1,futureBoard, -500000, 500000, true);
-            if(chessboard.getOnMove() == PieceColor.WHITE && current >= best){
+        double worst = -500000;
+        double current = 0;
+       /* for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
+            if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
 
-                best = current;
-                value = current;
-                bestMove = move;
-            }else if(chessboard.getOnMove() == PieceColor.BLACK && current <= worst){
-                System.out.println("Current: " + current);
-                worst = current;
-                value = current;
-                bestMove = move;
+                current = chessboard.getOnMove().isWhite() ? max(depth - 1, chessboard) : min(depth - 1, chessboard);
+                chessboard.undo();
+                if (chessboard.getOnMove().isWhite() && current >= best) {
+                    bestMove = chessboard.getCurrent().getLegalMoves().get(i);
+                    best = current;
+                } else if (!chessboard.getOnMove().isWhite() && current <= worst) {
+                    bestMove = chessboard.getCurrent().getLegalMoves().get(i);
+                    worst = current;
+                }
             }
-        }
-        Instant end = Instant.now();
-        System.out.println("Minimax with " + depth + " finished in " + Duration.between(start, end).toMillis() + "\nBest move found: " + bestMove + " with value " + value);
+        }*/
+        System.out.println("Best " + bestMove + " has value " + current);
         return bestMove;
     }
 
 
-    private double min(Chessboard chessboard, int depth){
-        if(depth == 0){
-            return evaluator.evaluate(chessboard,depth);
+    private double min(int depth, Chessboard chessboard) {
+
+        if (depth == 0) {
+            return evaluator.evaluate(chessboard, depth);
         }
+
         double worst = 500000;
-        for(Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
-            Chessboard futureBoard = move.make();
-            double current =  max(futureBoard, depth-1);
-            if(current <= worst){
-                worst = current;
-                bestMove = move;
-            }
+        for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
+         /*   if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
+                double current = max(depth - 1, chessboard);
+                if (current <= worst) {
+                    worst = current;
+                }
+                chessboard.undo();
+            }*/
         }
         return worst;
     }
-    private double max(Chessboard chessboard, int depth){
-        if(depth == 0){
-            return evaluator.evaluate(chessboard,depth);
-        }
-        double best = -500000;
-        for(Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
-            Chessboard futureBoard = move.make();
-           double current =  min(futureBoard, depth-1);
-           if(current >= best){
-               best = current;
-               bestMove = move;
-           }
-        }
 
+    private double max(int depth, Chessboard chessboard) {
 
-        return best;
-    }
-
-    public double alfabeta(int depth, Chessboard chessboard, double alfa, double beta, boolean max){
-
-        if(depth == 0){
+        if (depth == 0) {
             return evaluator.evaluate(chessboard, depth);
         }
-        if(max){
-            double current = -500000;
-            for (Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
-                Chessboard futureBoard = move.make();
-                current =Math.max(current, alfabeta(depth-1, futureBoard, alfa, beta, !max));
-                alfa = Math.max(alfa, current);
-                if(beta <=alfa)
-                    break;
 
-            }
-            return alfa;
-        }else {
-            double current = 500000;
-            for (Move move : MoveGenerator.getAllPossibleMoves(chessboard, true)){
-                Chessboard futureBoard = move.make();
-                current =Math.min(current, alfabeta(depth-1, futureBoard, alfa, beta, !max));
-                beta = Math.min(beta, current);
-                if(beta <=alfa)
-                    break;
+        double best = -500000;
+        for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
+           /* if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
+                double current = min(depth - 1, chessboard);
+                if (current >= best) {
+                    best = current;
+                }
+                chessboard.undo();
+            }*/
 
-            }
-            return beta;
         }
 
+        return best;
     }
 
 

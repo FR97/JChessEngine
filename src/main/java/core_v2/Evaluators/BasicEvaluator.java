@@ -1,10 +1,9 @@
 package core_v2.Evaluators;
 
 import core_v2.Chessboards.Chessboard;
-import core_v2.Chessboards.IBoard;
-import core_v2.Moves.MoveGenerator;
 import core_v2.Pieces.Piece;
 import core_v2.Pieces.PieceColor;
+import core_v2.Pieces.PieceList;
 
 import java.util.List;
 
@@ -36,15 +35,9 @@ public class BasicEvaluator implements Evaluator {
     @Override
     public double evaluate(Chessboard chessboard, int depth) {
 
-        List<Piece> whitePieces;
-        List<Piece> blackPieces;
-        if(chessboard.getOnMove() == PieceColor.WHITE){
-            whitePieces = chessboard.getActivePieces();
-            blackPieces = chessboard.getTargetPieces();
-        }else{
-            blackPieces = chessboard.getActivePieces();
-            whitePieces = chessboard.getTargetPieces();
-        }
+        //PieceList whitePieces = chessboard.getWhitePieces();
+      //  PieceList blackPieces = chessboard.getBlackPieces();
+
 
         /*
         if (lastBlackPieceCount == whitePieces.size() && lastWhitePieceCount == blackPieces.size()) {
@@ -55,18 +48,33 @@ public class BasicEvaluator implements Evaluator {
         lastBlackPieceCount = blackPieces.size();*/
 
         double sum = 0;
-
+/*
         for (Piece p : whitePieces) {
             sum += p.type.value();
         }
         for (Piece p : blackPieces) {
             sum -= p.type.value();
-        }
+        }*/
         //lastSum = sum;
 
         return sum;
     }
 
+
+    private double mobility(){
+
+        return 0;
+    }
+
+    private double castling(){
+
+        return 0;
+    }
+
+    private double check(){
+
+        return 0;
+    }
 
 
 }
