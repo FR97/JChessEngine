@@ -10,6 +10,7 @@ import core_v2.Pieces.PieceColor;
 import core_v2.Utils.PieceList;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,17 +22,31 @@ public class Player {
     public final PieceColor color;
     private final Chessboard chessboard;
     private final List<Move> legalMoves;
-    private final PieceList pieces;
+    //private final PieceList pieces;
+    private int kingPosition;
     private boolean inCheck;
     private boolean castled;
 
-    public Player(final Chessboard chessboard, final boolean castled, final PieceColor color, List<Move> legalMoves, List<Move> opponentMoves, final PieceList pieces) {
+    public Player(final Chessboard chessboard, final boolean castled, final PieceColor color, List<Move> legalMoves, List<Move> opponentMoves, final int kignPosition/*, final PieceList pieces*/) {
         this.chessboard = chessboard;
         this.color = color;
-        this.pieces = pieces;
+        //this.pieces = pieces;
         this.legalMoves = legalMoves;
+        this.legalMoves.sort((lhs, rhs) -> {
+
+            //TODO return 1 if rhs should be before lhs
+            //     return -1 if lhs should be before rhs
+            //     return 0 otherwise
+            if (lhs.type.value() < rhs.type.value())
+                return 1;
+            if (lhs.type.value() > rhs.type.value())
+                return -1;
+
+            return 0;
+        });
         this.inCheck = isKingAttacked(opponentMoves);
         this.castled = castled;
+        this.kingPosition = kignPosition;
     }
 
     // TODO implement check and castling methods
@@ -56,7 +71,7 @@ public class Player {
 
 
     public int getKingPosition() {
-        return this.pieces.getKing().position;
+        return this.kingPosition;
     }
 
     public boolean isCastled() {
@@ -98,33 +113,28 @@ public class Player {
     }
 */
     public void removeDangerousMoves() {
-        int counter = 0;
-        for (int i = 0; i < legalMoves.size(); i++) {
-            Move move = legalMoves.get(i);
+        for (Iterator<Move> i = legalMoves.iterator(); i.hasNext();) {
+            Move move = i.next();
             Chessboard cb = move.execute();
             if (cb.getOpponent().isInCheck()){
-                legalMoves.remove(i);
-                counter++;
+                i.remove();
             }
         }
-        System.out.println("Removed " + counter);
     }
 
     public boolean isKingAttacked(List<Move> enemyMoves) {
         for (Move move : enemyMoves) {
-            if (move.to == this.getKingPosition()){
-                System.out.println("MOVE " + move);
+            if (move.type == MoveType.CHECKMATE){
                 return true;
             }
-
         }
         return false;
     }
 
 
-    public PieceList getPieces() {
+   /* public PieceList getPieces() {
         return pieces;
-    }
+    }*/
 
 
     @Override
@@ -132,8 +142,10 @@ public class Player {
         return "Player{" +
                 "color=" + color +
                 ", legalMoves=" + legalMoves.size() +
-                ", pieces=" + pieces.size() +
+              /*  ", pieces=" + pieces.size() +*/
                 ", inCheck=" + inCheck +
+                ", inCheckMate=" + isCheckMated() +
+                ", inStaleMate=" + isStaleMated() +
                 ", castled=" + castled +
                 '}';
     }

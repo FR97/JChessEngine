@@ -5,6 +5,9 @@ import core_v2.Chessboards.Chessboard;
 import core_v2.Evaluators.Evaluator;
 import core_v2.Moves.Move;
 
+import java.time.Duration;
+import java.time.Instant;
+
 
 /**
  * Created by Filip on 11/28/2017.
@@ -12,73 +15,78 @@ import core_v2.Moves.Move;
 public class Minimax implements AiStrategy {
 
     private Evaluator evaluator;
+    private int boardsEvaluated;
     private Move bestMove;
 
     public Minimax(Evaluator evaluator) {
         this.evaluator = evaluator;
-
+        this.boardsEvaluated = 0;
     }
 
 
     @Override
     public Move getBestMove(Chessboard chessboard, int depth) {
+        Instant start = Instant.now();
         Move bestMove = null;
-        double best = -500000;
-        double worst = -500000;
-        double current = 0;
-       /* for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
-            if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
+        int best = -500000;
+        int worst = 500000;
+        int current = 0;
+        for (Move move : chessboard.getCurrent().getLegalMoves()) {
 
-                current = chessboard.getOnMove().isWhite() ? max(depth - 1, chessboard) : min(depth - 1, chessboard);
-                chessboard.undo();
-                if (chessboard.getOnMove().isWhite() && current >= best) {
-                    bestMove = chessboard.getCurrent().getLegalMoves().get(i);
-                    best = current;
-                } else if (!chessboard.getOnMove().isWhite() && current <= worst) {
-                    bestMove = chessboard.getCurrent().getLegalMoves().get(i);
-                    worst = current;
-                }
+            Chessboard futureChessboard = move.execute();
+            futureChessboard.getCurrent().removeDangerousMoves();
+            current = chessboard.getOnMove().isWhite() ? min(depth - 1, futureChessboard) : max(depth - 1, futureChessboard);
+
+            if (chessboard.getOnMove().isWhite() && current >= best) {
+                bestMove = move;
+                best = current;
+            } else if (!chessboard.getOnMove().isWhite() && current <= worst) {
+                bestMove = move;
+                worst = current;
             }
-        }*/
-        System.out.println("Best " + bestMove + " has value " + current);
+        }
+        Instant end = Instant.now();
+        System.out.println("Best " + bestMove + " with value " + current + " found in " + Duration.between(start, end).toMillis()
+                + "\nTotal boards evaluated: " + boardsEvaluated);
         return bestMove;
     }
 
 
-    private double min(int depth, Chessboard chessboard) {
-
-        if (depth == 0) {
+    private int min(int depth, Chessboard chessboard) {
+        // chessboard.getCurrent().removeDangerousMoves();
+        if (depth == 0 || chessboard.getOpponent().isCheckMated() || chessboard.getOpponent().isStaleMated()) {
+            this.boardsEvaluated++;
             return evaluator.evaluate(chessboard, depth);
         }
 
-        double worst = 500000;
-        for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
-         /*   if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
-                double current = max(depth - 1, chessboard);
-                if (current <= worst) {
-                    worst = current;
-                }
-                chessboard.undo();
-            }*/
+        int worst = 500000;
+        for (Move move : chessboard.getCurrent().getLegalMoves()) {
+
+            Chessboard futureChessboard = move.execute();
+            int current = max(depth - 1, futureChessboard);
+            if (current <= worst) {
+                worst = current;
+            }
+
         }
         return worst;
     }
 
-    private double max(int depth, Chessboard chessboard) {
-
-        if (depth == 0) {
+    private int max(int depth, Chessboard chessboard) {
+        //   chessboard.getCurrent().removeDangerousMoves();
+        if (depth == 0 || chessboard.getOpponent().isCheckMated() || chessboard.getOpponent().isStaleMated()) {
+            this.boardsEvaluated++;
             return evaluator.evaluate(chessboard, depth);
         }
 
-        double best = -500000;
-        for (int i = 0; i < chessboard.getCurrent().getLegalMoves().size(); i++) {
-           /* if (chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(i))) {
-                double current = min(depth - 1, chessboard);
-                if (current >= best) {
-                    best = current;
-                }
-                chessboard.undo();
-            }*/
+        int best = -500000;
+        for (Move move : chessboard.getCurrent().getLegalMoves()) {
+
+            Chessboard futureChessboard = move.execute();
+            int current = min(depth - 1, futureChessboard);
+            if (current >= best) {
+                best = current;
+            }
 
         }
 

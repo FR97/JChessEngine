@@ -2,11 +2,7 @@ package core_v2.AiStrategies;
 
 import core_v2.Chessboards.Chessboard;
 import core_v2.Evaluators.BasicEvaluator;
-import core_v2.Pieces.Piece;
-import core_v2.Pieces.PieceColor;
-import core_v2.Pieces.PieceType;
-import core_v2.Utils.IntHashMap;
-import core_v2.Utils.PieceList;
+
 import org.junit.Test;
 
 import java.time.Duration;
@@ -82,20 +78,21 @@ public class MinimaxTest {
         System.out.println(sum);
         System.out.println(Duration.between(start,end).toMillis());
 
-
+*/
 
         Chessboard chessboard = new Chessboard();
 
         Minimax minimax = new Minimax(new BasicEvaluator());
 
-        chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(0));
-        chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(2));
-        chessboard.getCurrent().makeMove(chessboard.getCurrent().getLegalMoves().get(11));
+        chessboard =  chessboard.getCurrent().getLegalMoves().get(0).execute();
+        chessboard =  chessboard.getCurrent().getLegalMoves().get(0).execute();
+        chessboard =  chessboard.getCurrent().getLegalMoves().get(0).execute();
 
         chessboard.print();
 
         System.out.println(minimax.getBestMove(chessboard,4));
-*/
+
+
     }
 
 }

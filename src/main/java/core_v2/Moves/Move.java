@@ -34,9 +34,9 @@ public class Move {
 
     public Chessboard execute(){
 
-        if(this.movingPiece.color != chessboard.getOnMove())
+     /*   if(this.movingPiece.color != chessboard.getOnMove())
             return this.chessboard;
-
+*/
         Chessboard.BoardBuilder boardBuilder = new Chessboard.BoardBuilder();
         PieceList activePieces = chessboard.getActivePieces();
         PieceColor nextOnmove = this.chessboard.getOnMove().isWhite()? PieceColor.BLACK : PieceColor.WHITE;

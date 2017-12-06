@@ -54,6 +54,7 @@ public class PieceList implements Iterable<Piece> {
                 this.pieces[i] = newPiece;
             }
         }
+
     }
 
     public PieceList insteadOf(Piece oldPiece, Piece newPiece) {

@@ -1,7 +1,12 @@
 package core_v2;
 
 
+import core_v2.AiStrategies.AiStrategy;
+import core_v2.AiStrategies.AlphaBeta;
+import core_v2.AiStrategies.Minimax;
 import core_v2.Chessboards.Chessboard;
+import core_v2.Evaluators.AdvancedEvaluator;
+import core_v2.Evaluators.BasicEvaluator;
 import core_v2.Moves.Move;
 import core_v2.Moves.MoveGenerator;
 import core_v2.Pieces.Piece;
@@ -10,6 +15,7 @@ import core_v2.Players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by Filip on 11/19/2017.
@@ -18,6 +24,8 @@ public class Game {
 
     private Chessboard chessboard;
     //private List<Move> allPossibleMoves;
+    private AiStrategy minimax;
+    private Stack<Move> moveHistory;
     private boolean ai;
 
     public Game() {
@@ -28,8 +36,9 @@ public class Game {
     public Game(boolean ai) {
 
         chessboard = new Chessboard();
-
+        this.minimax = new AlphaBeta(new AdvancedEvaluator());
         chessboard.print();
+        this.moveHistory = new Stack<>();
         this.ai = ai;
     }
 
@@ -45,9 +54,19 @@ public class Game {
        if(move == null){
            return false;
        }
+
        this.chessboard = move.execute();
+       moveHistory.push(move);
        this.chessboard.getCurrent().removeDangerousMoves();
        this.chessboard.print();
+       if(ai){
+           Move bestMove = this.minimax.getBestMove(this.chessboard, 4);
+           this.chessboard = bestMove.execute();
+           //moveHistory.push(bestMove);
+           this.chessboard.getCurrent().removeDangerousMoves();
+           this.chessboard.print();
+       }
+
        return true;
     }
 
@@ -81,6 +100,8 @@ public class Game {
 
     public void undoLastMove() {
 
+        this.chessboard = moveHistory.pop().undo();
+        this.chessboard.print();
 
     }
 }

@@ -6,17 +6,17 @@ package core_v2.Moves;
 public enum MoveType {
     NORMAL(1),
     PAWN_DOUBLE_JUMP(1),
-    CHECKMATE(100000),
-    CAPTURE(1),
-    ENPASSANT(1.1),
-    CASTLING(1.2);
+    CHECKMATE(5),
+    CAPTURE(3),
+    ENPASSANT(3),
+    CASTLING(2);
 
-    double factor;
-    MoveType(double factor){
-        this.factor = factor;
+    int value;
+    MoveType(int value){
+        this.value = value;
     }
 
-    public double factor(){
-        return factor;
+    public double value(){
+        return value;
     }
 }

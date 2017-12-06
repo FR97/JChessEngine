@@ -21,8 +21,10 @@ public class CaptureMove extends Move {
 
     @Override
     public Chessboard execute() {
-        if(this.movingPiece.color != chessboard.getOnMove())
+      /*  if(this.movingPiece.color != chessboard.getOnMove())
             return chessboard;
+       */
+
 
         Chessboard.BoardBuilder boardBuilder = new Chessboard.BoardBuilder();
         PieceList activePieces = chessboard.getActivePieces();

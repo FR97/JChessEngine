@@ -46,8 +46,8 @@ public class Chessboard implements Serializable {
             blackMoves.addAll(MoveGenerator.findPossibleMoves(p, this));
         }
 
-        this.whitePlayer = new Player(this, false, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces);
-        this.blackPlayer = new Player(this, false, PieceColor.BLACK, whiteMoves, blackMoves, blackPieces);
+        this.whitePlayer = new Player(this, false, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces.getKing().position);
+        this.blackPlayer = new Player(this, false, PieceColor.BLACK, whiteMoves, blackMoves, blackPieces.getKing().position);
 
        // this.blackPlayer.removeDangerousMoves();
         //whitePlayer.findLegalMoves(this);
@@ -72,8 +72,8 @@ public class Chessboard implements Serializable {
             blackMoves.addAll(MoveGenerator.findPossibleMoves(p, this));
         }
 
-        this.whitePlayer = new Player(this, builder.whiteCastled, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces);
-        this.blackPlayer = new Player(this, builder.blackCastled, PieceColor.BLACK, blackMoves, whiteMoves, blackPieces);
+        this.whitePlayer = new Player(this, builder.whiteCastled, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces.getKing().position);
+        this.blackPlayer = new Player(this, builder.blackCastled, PieceColor.BLACK, blackMoves, whiteMoves, blackPieces.getKing().position);
     }
 
 /*
@@ -115,6 +115,7 @@ public class Chessboard implements Serializable {
             return p;
         return blackPieces.get(position);
     }
+
 /*
     public void setPiece(Piece p) {
         if (p.color.isWhite())
@@ -236,9 +237,9 @@ public class Chessboard implements Serializable {
 
         s += "\nCurrently on move: " + onMove;
 
-        s += "\nEnpassant possible: " + enpassantPossible;/*
-        s += "\nWhite castlings: queenside- " + whiteQueensideCastling + ", kingside- " + whiteKingsideCastling;
-        s += "\nBlack castlings: queenside- " + blackQueensideCastling + ", kingside- " + blackKingsideCastling;*/
+        s += "\nEnpassant possible: " + enpassantPossible;
+        s += "\nWhite " + whitePlayer;
+        s += "\nBlack " + blackPlayer;
         System.out.println(s);
     }
 
@@ -256,6 +257,17 @@ public class Chessboard implements Serializable {
 
     public Player getOpponent() {
         return onMove.isWhite() ? blackPlayer : whitePlayer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return whitePieces != null ? whitePieces.hashCode() : 0;
     }
 
     public static class BoardBuilder {

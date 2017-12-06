@@ -22,11 +22,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
-
         BorderPane root = new BorderPane();
         HBox root1 = new HBox();
-        Game game = new Game();
+        Game game = new Game(true);
         ChessboardComponent cbc = new ChessboardComponent();
         GameController cbcontroller = new GameController(game, cbc);
 
@@ -35,6 +33,9 @@ public class Main extends Application {
         btnUndo.setOnAction( event -> {
             game.undoLastMove();
             cbc.updateTiles(game.boardAsArray());
+            if(!game.getCurrentPlayer().isInCheck()){
+                cbc.removeChecked();
+            }
         });
 
         root.setTop(new Label("JavaFXChess"));

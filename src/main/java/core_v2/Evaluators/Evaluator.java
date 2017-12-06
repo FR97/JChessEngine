@@ -8,5 +8,5 @@ import core_v2.Chessboards.IBoard;
  */
 public interface Evaluator {
 
-    double evaluate(Chessboard chessboard, int depth);
+    int evaluate(Chessboard chessboard, int depth);
 }
