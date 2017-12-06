@@ -63,20 +63,6 @@ public class Player {
         return castled;
     }
 
-    public Chessboard makeMove(int from, int to) {
-        Move move = findMove(from, to);
-        if (move == null || !isMoveValid(move))
-            return chessboard;
-
-        return move.execute();
-    }
-
-    public Chessboard makeMove(Move move) {
-        if (move == null || !isMoveValid(move))
-            return chessboard;
-
-        return move.execute();
-    }
 
     public Move findMove(int from, int to) {
         for (Move move : legalMoves) {
@@ -84,10 +70,6 @@ public class Player {
                 return move;
         }
         return null;
-    }
-
-    public void setCastled(boolean castled) {
-        this.castled = castled;
     }
 
     public boolean isMoveValid(Move move) {
@@ -119,17 +101,22 @@ public class Player {
         int counter = 0;
         for (int i = 0; i < legalMoves.size(); i++) {
             Move move = legalMoves.get(i);
-            if (isKingAttacked(move.execute().getCurrent().getLegalMoves())){
+            Chessboard cb = move.execute();
+            if (cb.getOpponent().isInCheck()){
                 legalMoves.remove(i);
-                System.out.println("Removed " + counter);
+                counter++;
             }
         }
+        System.out.println("Removed " + counter);
     }
 
     public boolean isKingAttacked(List<Move> enemyMoves) {
         for (Move move : enemyMoves) {
-            if (move.type == MoveType.CHECKMATE)
+            if (move.to == this.getKingPosition()){
+                System.out.println("MOVE " + move);
                 return true;
+            }
+
         }
         return false;
     }

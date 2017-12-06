@@ -40,7 +40,13 @@ public class Game {
     }
 
     public boolean makeMove(int from, int to) {
-       this.chessboard = chessboard.getCurrent().makeMove(from, to);
+
+       Move move = chessboard.getCurrent().findMove(from, to);
+       if(move == null){
+           return false;
+       }
+       this.chessboard = move.execute();
+       this.chessboard.getCurrent().removeDangerousMoves();
        this.chessboard.print();
        return true;
     }

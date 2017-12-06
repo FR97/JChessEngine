@@ -281,8 +281,6 @@ public class Chessboard implements Serializable {
         }
 
         public BoardBuilder addPieces(PieceList pieces, PieceColor color) {
-            for (Piece p : pieces)
-                System.out.println(p);
             if (color.isWhite())
                 this.whitePieces = pieces;
             else

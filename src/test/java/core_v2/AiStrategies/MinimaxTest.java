@@ -21,9 +21,27 @@ import static org.junit.Assert.*;
 public class MinimaxTest {
     @Test
     public void getBestMove() throws Exception {
-/*
-        Instant start = Instant.now();
-        PieceList whitePieces;
+
+       /* Instant start = Instant.now();
+        int sum = 0;
+        for (int i = 0; i < 5000000; i++){
+
+            Piece[] pieces = new Piece[32];
+            for(int j = 0; j < 32; j++){
+                pieces[j*2] = new Piece(j*2, PieceType.KING, PieceColor.WHITE);
+            }
+            for(int j = 0; j < 32; j++){
+                if(pieces[j] != null)
+                    sum+=pieces[j].position;
+            }
+
+
+        }
+
+        Instant end = Instant.now();
+        System.out.println(Duration.between(start,end).toMillis());
+        System.out.println(sum);*/
+     /*   PieceList whitePieces;
         PieceList.PieceListBuilder builder = new PieceList.PieceListBuilder(16);
         builder.put(new Piece(63, PieceType.ROOK, PieceColor.WHITE));
         builder.put( new Piece(62, PieceType.KNIGHT, PieceColor.WHITE));
