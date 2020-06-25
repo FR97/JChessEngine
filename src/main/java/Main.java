@@ -2,7 +2,7 @@
  * Created by Filip on 11/28/2017.
  */
 
-import core_v2.Game;
+import core.Game;
 import gui.ChessboardComponent;
 import gui.GameController;
 import javafx.application.Application;

@@ -1,7 +1,6 @@
 package gui;
 
-import core_v2.Pieces.PieceColor;
-import core_v2.Utils.Position;
+import core.Pieces.PieceColor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -1,7 +1,7 @@
 package gui;
 
-import core_v2.Game;
-import core_v2.Pieces.PieceColor;
+import core.Game;
+import core.Pieces.PieceColor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
