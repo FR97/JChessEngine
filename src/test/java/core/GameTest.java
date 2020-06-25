@@ -43,9 +43,11 @@ public class GameTest {
 
     @Test
     public void testAi(){
-        /*
+
         Game g = new Game();
+
         Move m = g.getBestMove(1);
+        g.makeMove(m);
         /*
         System.out.println("WITH DEPTH 1");
         g.printBestMove();
