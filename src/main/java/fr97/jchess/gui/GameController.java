@@ -1,7 +1,7 @@
 package fr97.jchess.gui;
 
 import fr97.jchess.core.Game;
-import fr97.jchess.core.Pieces.PieceColor;
+import fr97.jchess.core.piece.PieceColor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

@@ -1,6 +1,4 @@
-package fr97.jchess; /**
- * Created by Filip on 11/28/2017.
- */
+package fr97.jchess;
 
 import fr97.jchess.core.Game;
 import fr97.jchess.gui.ChessboardComponent;
@@ -13,6 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+/**
+ * Created by Filip on 11/28/2017.
+ */
 public class Main extends Application {
 
     public static void main(String[] args) {
@@ -30,10 +31,10 @@ public class Main extends Application {
 
         Button btnUndo = new Button("Undo");
 
-        btnUndo.setOnAction( event -> {
+        btnUndo.setOnAction(event -> {
             game.undoLastMove();
             cbc.updateTiles(game.boardAsArray());
-            if(!game.getCurrentPlayer().isInCheck()){
+            if (!game.getCurrentPlayer().isInCheck()) {
                 cbc.removeChecked();
             }
         });
@@ -51,7 +52,6 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setResizable(false);
         primaryStage.show();
-
 
 
     }

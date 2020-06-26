@@ -1,13 +1,13 @@
 package fr97.jchess.core;
 
 
-import fr97.jchess.core.AiStrategies.AiStrategy;
-import fr97.jchess.core.AiStrategies.AlphaBeta;
-import fr97.jchess.core.Chessboards.Chessboard;
-import fr97.jchess.core.Evaluators.AdvancedEvaluator;
-import fr97.jchess.core.Moves.Move;
-import fr97.jchess.core.Pieces.PieceColor;
-import fr97.jchess.core.Players.Player;
+import fr97.jchess.core.ai.AiStrategy;
+import fr97.jchess.core.ai.AlphaBeta;
+import fr97.jchess.core.chessboard.Chessboard;
+import fr97.jchess.core.evaluator.AdvancedEvaluator;
+import fr97.jchess.core.move.Move;
+import fr97.jchess.core.piece.PieceColor;
+import fr97.jchess.core.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

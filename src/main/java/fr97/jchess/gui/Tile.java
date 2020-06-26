@@ -1,6 +1,6 @@
 package fr97.jchess.gui;
 
-import fr97.jchess.core.Pieces.PieceColor;
+import fr97.jchess.core.piece.PieceColor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
