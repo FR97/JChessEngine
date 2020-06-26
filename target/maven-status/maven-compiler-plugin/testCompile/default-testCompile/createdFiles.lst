@@ -1,8 +1,0 @@
-core_v2\Moves\MoveGeneratorTest.class
-core_v2\Chessboards\ChessboardTest.class
-core\GameTest.class
-core_v2\AiStrategies\MinimaxTest.class
-core_v2\Pieces\PieceListTest.class
-core_v2\Pieces\RookTest.class
-core\Moves\MoveGeneratorTest.class
-core_v2\Utils\PositionTest.class
