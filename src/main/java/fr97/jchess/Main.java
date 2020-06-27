@@ -26,24 +26,24 @@ public class Main extends Application {
         BorderPane root = new BorderPane();
         HBox root1 = new HBox();
         Game game = new Game(true);
-        ChessboardComponent cbc = new ChessboardComponent();
-        GameController cbcontroller = new GameController(game, cbc);
+        ChessboardComponent chessboard = new ChessboardComponent();
+        GameController gameController = new GameController(game, chessboard);
 
         Button btnUndo = new Button("Undo");
 
         btnUndo.setOnAction(event -> {
             game.undoLastMove();
-            cbc.updateTiles(game.boardAsArray());
+            chessboard.updateTiles(game.boardAsArray());
             if (!game.getCurrentPlayer().isInCheck()) {
-                cbc.removeChecked();
+                chessboard.removeChecked();
             }
         });
 
         root.setTop(new Label("JavaFXChess"));
-        root.setCenter(cbc.getComponentNode());
+        root.setCenter(chessboard.getComponentNode());
 
         root1.getChildren().add(new Label("JavaFXChess"));
-        root1.getChildren().add(cbc.getComponentNode());
+        root1.getChildren().add(chessboard.getComponentNode());
         root1.getChildren().add(btnUndo);
 
         Scene scene = new Scene(root1, 1000, 800);
