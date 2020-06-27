@@ -79,15 +79,15 @@ public class ChessboardComponent {
 
 
     public void setPossibleMoves(int[] possibleMoves) {
-        for (int i = 0; i < possibleMoves.length; i++) {
-            chessboard[possibleMoves[i]].markAsPossibleMove(true);
+        for (int possibleMove : possibleMoves) {
+            chessboard[possibleMove].markAsPossibleMove(true);
         }
 
     }
 
     public void removePossibleMoves(int[] possibleMoves) {
-        for (int i = 0; i < possibleMoves.length; i++) {
-            chessboard[possibleMoves[i]].markAsPossibleMove(false);
+        for (int possibleMove : possibleMoves) {
+            chessboard[possibleMove].markAsPossibleMove(false);
         }
     }
 
