@@ -9,9 +9,9 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class AlphaBeta implements AiStrategy {
-    private Evaluator evaluator;
+
+    private final Evaluator evaluator;
     private int boardsEvaluated;
-    private Move bestMove;
 
     public AlphaBeta(Evaluator evaluator) {
         this.evaluator = evaluator;
@@ -51,7 +51,6 @@ public class AlphaBeta implements AiStrategy {
 
 
     private int min(int depth, Chessboard chessboard, int alpha, int beta) {
-      //   chessboard.getOpponent().removeDangerousMoves();
         if (depth == 0 || chessboard.getCurrent().isCheckMated() || chessboard.getCurrent().isStaleMated()) {
             this.boardsEvaluated++;
             return evaluator.evaluate(chessboard, depth);
