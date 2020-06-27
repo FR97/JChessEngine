@@ -22,34 +22,20 @@ public class GameController {
         this.game = game;
         this.chessboardUi = chessboardUi;
         this.currentPossibleMoves = new int[0];
-
         this.selectedTile = null;
-
-        // this.gameStatus = game.getStatus();
         this.colorOnMove = PieceColor.WHITE;
-        chessboardUi.initWithStartingPositions(game.boardAsArray(), tileEvent);
+        chessboardUi.initWithStartingPositions(game.boardAsArray(), this::tileEventHandler);
     }
 
     public void toggleStatus() {
-        /*
-        this.gameStatus = game.getStatus();
-        if(gameStatus == Game.GameStatus.BLACK_WON){
-            System.out.println("GAME FINISHED AND BLACK WON");
-        }else if(gameStatus == Game.GameStatus.WHITE_WON){
-            System.out.println("GAME FINISHED AND WHITE WON");
-        }*/
         this.colorOnMove = game.getOnMove();
-        System.out.println("Changed on move!");
     }
 
-    EventHandler<ActionEvent> undoEvent = event -> {
 
-    };
-
-    EventHandler<ActionEvent> tileEvent = event -> {
+    public void tileEventHandler(ActionEvent event){
         this.colorOnMove = game.getOnMove();
         Tile newTile = (Tile) event.getSource();
-        //System.out.println("Tile clicked: " + newTile);
+
         if (selectedTile == null) {
 
             if (newTile.isOccupied() && newTile.getPieceColor() == colorOnMove) {
@@ -69,9 +55,6 @@ public class GameController {
                 if (newTile.isPossible()) {
                     // MOVE TO NEW POSITION
 
-                    // newTile.setPiece(selectedTile.getPiece());
-                    //  selectedTile.setPiece("");
-
                     chessboardUi.removeChecked();
                     game.makeMove(selectedTile.POSITION, newTile.POSITION);
 
@@ -87,14 +70,7 @@ public class GameController {
 
                     chessboardUi.updateTiles(game.boardAsArray());
                     toggleStatus();
-                    /*if(game.getAiMove()){
-
-                        chessboardUi.updateTiles(game.boardAs2DString());
-                        toggleStatus();
-                    }*/
-
                 } else if (selectedTile.isOccupied() && selectedTile.getPieceColor().equals(newTile.getPieceColor())) {
-                    // System.out.println(currentPossibleMoves);
                     chessboardUi.removePossibleMoves(currentPossibleMoves);
                     selectedTile.deselect();
                     selectedTile = newTile;
@@ -105,13 +81,11 @@ public class GameController {
 
                     chessboardUi.setPossibleMoves(currentPossibleMoves);
                 }
-
-
             }
         }
+    }
 
-
-    };
-
-
+    private void undoEventHandler(ActionEvent event){
+        // TODO Implementation
+    }
 }

@@ -19,21 +19,17 @@ import java.util.Stack;
 public class Game {
 
     private Chessboard chessboard;
-    //private List<Move> allPossibleMoves;
-    private AiStrategy minimax;
-    private Stack<Move> moveHistory;
-    private boolean ai;
+    private final AiStrategy minimax;
+    private final Stack<Move> moveHistory;
+    private final boolean ai;
 
     public Game() {
         this(false);
-
     }
 
     public Game(boolean ai) {
-
-        chessboard = new Chessboard();
+        this.chessboard = new Chessboard();
         this.minimax = new AlphaBeta(new AdvancedEvaluator());
-        chessboard.print();
         this.moveHistory = new Stack<>();
         this.ai = ai;
     }
@@ -58,7 +54,6 @@ public class Game {
        if(ai){
            Move bestMove = this.minimax.getBestMove(this.chessboard, 4);
            this.chessboard = bestMove.execute();
-           //moveHistory.push(bestMove);
            this.chessboard.getCurrent().removeDangerousMoves();
            this.chessboard.print();
        }
@@ -67,18 +62,18 @@ public class Game {
     }
 
     public int[] getPossibleMoves(int piecePosition) {
-
         List<Move> moves = new ArrayList<>();
 
         for(Move m : chessboard.getCurrent().getLegalMoves()){
             if(m.movingPiece.position == piecePosition)
                 moves.add(m);
         }
+
         int[] positions = new int[moves.size()];
         for (int i = 0; i <moves.size(); i++) {
             positions[i] =moves.get(i).to;
         }
-        System.out.println("Selected piece has " + positions.length + " possible moves");
+
         return positions;
     }
 
@@ -95,10 +90,8 @@ public class Game {
     }
 
     public void undoLastMove() {
-
         this.chessboard = moveHistory.pop().undo();
         this.chessboard.print();
-
     }
 }
 

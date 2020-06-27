@@ -14,9 +14,8 @@ import java.time.Instant;
  */
 public class Minimax implements AiStrategy {
 
-    private Evaluator evaluator;
+    private final Evaluator evaluator;
     private int boardsEvaluated;
-    private Move bestMove;
 
     public Minimax(Evaluator evaluator) {
         this.evaluator = evaluator;
@@ -53,7 +52,6 @@ public class Minimax implements AiStrategy {
 
 
     private int min(int depth, Chessboard chessboard) {
-        // chessboard.getCurrent().removeDangerousMoves();
         if (depth == 0 || chessboard.getOpponent().isCheckMated() || chessboard.getOpponent().isStaleMated()) {
             this.boardsEvaluated++;
             return evaluator.evaluate(chessboard, depth);
@@ -73,7 +71,6 @@ public class Minimax implements AiStrategy {
     }
 
     private int max(int depth, Chessboard chessboard) {
-        //   chessboard.getCurrent().removeDangerousMoves();
         if (depth == 0 || chessboard.getOpponent().isCheckMated() || chessboard.getOpponent().isStaleMated()) {
             this.boardsEvaluated++;
             return evaluator.evaluate(chessboard, depth);

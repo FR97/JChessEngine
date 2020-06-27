@@ -12,8 +12,9 @@ import java.util.function.Consumer;
 public class PieceList implements Iterable<Piece> {
 
     private static final int MAX_SIZE = 16;
-    private final int size;
+
     private final Piece[] pieces;
+    private final int size;
     private final int kingPosition;
 
 
@@ -126,7 +127,7 @@ public class PieceList implements Iterable<Piece> {
     }
 
     public int containsOnPosition(int position) {
-        if (position < 0 && position > 63)
+        if (position < 0 || position > 63)
             return -1;
         for (int i = 0; i < this.size; i++) {
             if (pieces[i].position == position)
@@ -138,20 +139,6 @@ public class PieceList implements Iterable<Piece> {
     public int size() {
         return this.size;
     }
-
-   /*
-   for (int i = 47; i > 55; i++)
-            pieceListBuilder.add(new Piece(i, PieceType.PAWN, PieceColor.WHITE));
-
-        pieceListBuilder.add(new Piece(56, PieceType.ROOK, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(57, PieceType.KNIGHT, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(58, PieceType.BISHOP, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(59, PieceType.QUEEN, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(60, PieceType.KING, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(61, PieceType.BISHOP, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(62, PieceType.KNIGHT, PieceColor.WHITE));
-        pieceListBuilder.add(new Piece(63, PieceType.ROOK, PieceColor.WHITE));
-    */
 
     public static PieceList getStartingWhiteList() {
         final Piece[] pieces = new Piece[16];
@@ -170,20 +157,6 @@ public class PieceList implements Iterable<Piece> {
         return of(pieces);
     }
 
-    /*
-            pieceListBuilder.add(new Piece(0, PieceType.ROOK, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(1, PieceType.KNIGHT, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(2, PieceType.BISHOP, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(3, PieceType.QUEEN, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(4, PieceType.KING, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(5, PieceType.BISHOP, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(6, PieceType.KNIGHT, PieceColor.BLACK));
-        pieceListBuilder.add(new Piece(7, PieceType.ROOK, PieceColor.BLACK));
-
-
-        for (int i = 8; i < 16; i++)
-            pieceListBuilder.add(new Piece(i, PieceType.PAWN, PieceColor.BLACK));
-     */
     public static PieceList getStartingBlackList() {
         final Piece[] pieces = new Piece[16];
         pieces[0] = new Piece(4, PieceType.KING, PieceColor.BLACK);
@@ -221,7 +194,7 @@ public class PieceList implements Iterable<Piece> {
     private static class PieceIterator implements Iterator<Piece> {
 
         private int current;
-        private PieceList pieceList;
+        private final PieceList pieceList;
 
         private PieceIterator(PieceList pieceList) {
             current = 0;

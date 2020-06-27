@@ -23,30 +23,26 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        BorderPane root = new BorderPane();
-        HBox root1 = new HBox();
+        HBox root = new HBox();
         Game game = new Game(true);
-        ChessboardComponent cbc = new ChessboardComponent();
-        GameController cbcontroller = new GameController(game, cbc);
+        ChessboardComponent chessboard = new ChessboardComponent();
+        GameController gameController = new GameController(game, chessboard);
 
         Button btnUndo = new Button("Undo");
 
         btnUndo.setOnAction(event -> {
             game.undoLastMove();
-            cbc.updateTiles(game.boardAsArray());
+            chessboard.updateTiles(game.boardAsArray());
             if (!game.getCurrentPlayer().isInCheck()) {
-                cbc.removeChecked();
+                chessboard.removeChecked();
             }
         });
+        
+        root.getChildren().add(new Label("JavaFXChess"));
+        root.getChildren().add(chessboard.getComponentNode());
+        root.getChildren().add(btnUndo);
 
-        root.setTop(new Label("JavaFXChess"));
-        root.setCenter(cbc.getComponentNode());
-
-        root1.getChildren().add(new Label("JavaFXChess"));
-        root1.getChildren().add(cbc.getComponentNode());
-        root1.getChildren().add(btnUndo);
-
-        Scene scene = new Scene(root1, 1000, 800);
+        Scene scene = new Scene(root, 1000, 800);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("css/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();

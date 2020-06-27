@@ -7,9 +7,5 @@ import fr97.jchess.core.chessboard.Chessboard;
  */
 public interface AiStrategy {
 
-
-
     Move getBestMove(Chessboard chessboard, int depth);
-
-
 }
