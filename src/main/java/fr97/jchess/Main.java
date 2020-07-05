@@ -30,13 +30,7 @@ public class Main extends Application {
 
         Button btnUndo = new Button("Undo");
 
-        btnUndo.setOnAction(event -> {
-            game.undoLastMove();
-            chessboard.updateTiles(game.boardAsArray());
-            if (!game.getCurrentPlayer().isInCheck()) {
-                chessboard.removeChecked();
-            }
-        });
+        btnUndo.setOnAction(gameController::undoEventHandler);
         
         root.getChildren().add(new Label("JavaFXChess"));
         root.getChildren().add(chessboard.getComponentNode());

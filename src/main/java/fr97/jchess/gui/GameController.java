@@ -93,7 +93,11 @@ public class GameController {
         }
     }
 
-    private void undoEventHandler(ActionEvent event){
-        // TODO Implementation
+    public void undoEventHandler(ActionEvent event){
+        game.undoLastMove();
+        chessboardUi.updateTiles(game.boardAsArray());
+        if (!game.getCurrentPlayer().isInCheck()) {
+            chessboardUi.removeChecked();
+        }
     }
 }
