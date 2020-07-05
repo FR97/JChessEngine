@@ -26,9 +26,6 @@ public class Chessboard implements Serializable {
     private final Player whitePlayer;
     private final Player blackPlayer;
 
-    private Player current;
-    private Player opponent;
-
     public Chessboard() {
 
         this.whitePieces = PieceList.getStartingWhiteList();
@@ -48,11 +45,6 @@ public class Chessboard implements Serializable {
 
         this.whitePlayer = new Player(this, false, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces.getKing().position);
         this.blackPlayer = new Player(this, false, PieceColor.BLACK, whiteMoves, blackMoves, blackPieces.getKing().position);
-
-       // this.blackPlayer.removeDangerousMoves();
-        //whitePlayer.findLegalMoves(this);
-        // blackPlayer.findLegalMoves(this);
-
     }
 
     private Chessboard(BoardBuilder builder) {
@@ -76,63 +68,12 @@ public class Chessboard implements Serializable {
         this.blackPlayer = new Player(this, builder.blackCastled, PieceColor.BLACK, blackMoves, whiteMoves, blackPieces.getKing().position);
     }
 
-/*
-    public void move(int from, int to, boolean capture) {
-        if (onMove.isWhite()) {
-            whitePieces.put(to, whitePieces.remove(from).withPosition(to));
-            if (capture) {
-                blackPieces.remove(to);
-            }
-        } else {
-            blackPieces.put(to, blackPieces.remove(from).withPosition(to));
-            if (capture) {
-                whitePieces.remove(to);
-            }
-        }
-
-    }*/
-/*
-    public void toHistory(Move move) {
-        moveHistory.push(move);
-    }
-
-    public void undo() {
-
-        Move m = moveHistory.pop();
-        m.undo(this);
-        if (moveHistory.size() > 0 && moveHistory.peek().type == MoveType.PAWN_DOUBLE_JUMP) {
-            setEnpassantPossible(true);
-            setEnpassantPawnPosition(moveHistory.peek().to);
-        }
-        if(m.type == MoveType.CASTLING)
-            current.setCastled(false);
-    }
-*/
-
     public Piece getPiece(int position) {
         Piece p = whitePieces.get(position);
         if (p != null)
             return p;
         return blackPieces.get(position);
     }
-
-/*
-    public void setPiece(Piece p) {
-        if (p.color.isWhite())
-            whitePieces.put(p.position, p);
-        else
-            blackPieces.put(p.position, p);
-    }*/
-/*
-    public Piece removePiece(int position) {
-        if (whitePieces.containsKey(position))
-            return whitePieces.remove(position);
-        else if (blackPieces.containsKey(position))
-            return blackPieces.remove(position);
-
-        return null;
-    }*/
-
 
     public PieceList getWhitePieces() {
         return whitePieces;
@@ -160,8 +101,6 @@ public class Chessboard implements Serializable {
     public PieceColor getOnMove() {
         return this.onMove;
     }
-
-
 
     public boolean isEnpassantPossible() {
         return enpassantPossible;
