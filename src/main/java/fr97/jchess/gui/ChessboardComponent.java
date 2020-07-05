@@ -1,11 +1,8 @@
 package fr97.jchess.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.event.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
