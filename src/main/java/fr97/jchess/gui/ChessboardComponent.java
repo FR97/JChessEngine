@@ -1,10 +1,8 @@
 package fr97.jchess.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.event.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -12,13 +10,13 @@ import javafx.scene.layout.GridPane;
  * Created by Filip on 11/28/2017.
  */
 public class ChessboardComponent {
+
     private final GridPane parent;
     private final GridPane grid;
     private final Tile[] chessboard = new Tile[64];
     private Tile checkedTile = null;
 
     public ChessboardComponent() {
-
         parent = new GridPane();
         grid = new GridPane();
 
@@ -60,10 +58,10 @@ public class ChessboardComponent {
 
 
     public void updateTiles(String[] chessboard) {
-        grid.getChildren().forEach(t -> {
-            Tile tile = (Tile) t;
+        for (Node n : grid.getChildren()) {
+            Tile tile = (Tile) n;
             tile.setPiece(chessboard[tile.POSITION]);
-        });
+        }
     }
 
     public void removeChecked(){
