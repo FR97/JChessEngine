@@ -8,11 +8,11 @@ import fr97.jchess.core.util.PieceList;
 
 public class AdvancedEvaluator implements Evaluator {
 
-    private final int CASTLING = 65;
-    private final int CHECK = 40;
-    private final int CHECK_MATE = 10000;
-    private final int ISOLATED_PAWN = -15;
-    private final int DOUBLE_BISHOP = 45;
+    private static final int CASTLING = 65;
+    private static final int CHECK = 40;
+    private static final int CHECK_MATE = 10000;
+    private static final int ISOLATED_PAWN = -15;
+    private static final int DOUBLE_BISHOP = 45;
 
     public AdvancedEvaluator() {
 
