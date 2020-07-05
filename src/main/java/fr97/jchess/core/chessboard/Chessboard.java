@@ -19,15 +19,12 @@ public class Chessboard implements Serializable {
 
     PieceList whitePieces;
     PieceList blackPieces;
-    private PieceColor onMove;
-    //private Stack<Move> moveHistory;
-    private boolean enpassantPossible;
+    private final PieceColor onMove;
+    private final boolean enpassantPossible;
     private int enpassantPawnPosition;
 
-    private Player whitePlayer;
-    private Player blackPlayer;
-    private Player current;
-    private Player opponent;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
 
     public Chessboard() {
 
@@ -48,11 +45,6 @@ public class Chessboard implements Serializable {
 
         this.whitePlayer = new Player(this, false, PieceColor.WHITE, whiteMoves, blackMoves, whitePieces.getKing().position);
         this.blackPlayer = new Player(this, false, PieceColor.BLACK, whiteMoves, blackMoves, blackPieces.getKing().position);
-
-       // this.blackPlayer.removeDangerousMoves();
-        //whitePlayer.findLegalMoves(this);
-        // blackPlayer.findLegalMoves(this);
-
     }
 
     private Chessboard(BoardBuilder builder) {
@@ -76,63 +68,12 @@ public class Chessboard implements Serializable {
         this.blackPlayer = new Player(this, builder.blackCastled, PieceColor.BLACK, blackMoves, whiteMoves, blackPieces.getKing().position);
     }
 
-/*
-    public void move(int from, int to, boolean capture) {
-        if (onMove.isWhite()) {
-            whitePieces.put(to, whitePieces.remove(from).withPosition(to));
-            if (capture) {
-                blackPieces.remove(to);
-            }
-        } else {
-            blackPieces.put(to, blackPieces.remove(from).withPosition(to));
-            if (capture) {
-                whitePieces.remove(to);
-            }
-        }
-
-    }*/
-/*
-    public void toHistory(Move move) {
-        moveHistory.push(move);
-    }
-
-    public void undo() {
-
-        Move m = moveHistory.pop();
-        m.undo(this);
-        if (moveHistory.size() > 0 && moveHistory.peek().type == MoveType.PAWN_DOUBLE_JUMP) {
-            setEnpassantPossible(true);
-            setEnpassantPawnPosition(moveHistory.peek().to);
-        }
-        if(m.type == MoveType.CASTLING)
-            current.setCastled(false);
-    }
-*/
-
     public Piece getPiece(int position) {
         Piece p = whitePieces.get(position);
         if (p != null)
             return p;
         return blackPieces.get(position);
     }
-
-/*
-    public void setPiece(Piece p) {
-        if (p.color.isWhite())
-            whitePieces.put(p.position, p);
-        else
-            blackPieces.put(p.position, p);
-    }*/
-/*
-    public Piece removePiece(int position) {
-        if (whitePieces.containsKey(position))
-            return whitePieces.remove(position);
-        else if (blackPieces.containsKey(position))
-            return blackPieces.remove(position);
-
-        return null;
-    }*/
-
 
     public PieceList getWhitePieces() {
         return whitePieces;
@@ -161,35 +102,6 @@ public class Chessboard implements Serializable {
         return this.onMove;
     }
 
-   /* public void setOnMove(PieceColor onMove) {
-        this.onMove = onMove;
-    }*/
-/*
-    public void toggleOnMove() {
-        enpassantPossible = false;
-        enpassantPawnPosition = -1;
-        onMove = onMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
-
-        whitePlayer.setPieces(this.whitePieces);
-        blackPlayer.setPieces(this.blackPieces);
-
-        whitePlayer.findLegalMoves(this);
-        blackPlayer.findLegalMoves(this);
-        if (onMove.isWhite()) {
-            this.current = whitePlayer;
-            this.opponent = blackPlayer;
-        } else {
-            this.current = blackPlayer;
-            this.opponent = whitePlayer;
-        }
-
-        current.setInCheck(false);
-        if (current.isKingAttacked(opponent.getLegalMoves())) {
-            current.setInCheck(true);
-        }
-        System.out.println("Current " + current);
-    }*/
-
     public boolean isEnpassantPossible() {
         return enpassantPossible;
     }
@@ -211,35 +123,35 @@ public class Chessboard implements Serializable {
     }
 
     public void print() {
-        String s = "\n-------------------------------------\n          CHESSBOARD STATE\n\n   ";
+        StringBuilder s = new StringBuilder("\n------------------------------------\n        CHESSBOARD STATE\n\n   ");
         char c = 'A';
         for (int i = 0; i < 8; i++) {
-            s += " " + c++ + "  ";
+            s.append(" ").append(c++).append("  ");
         }
-        s += "\t\n  ---------------------------------\n";
+        s.append("\t\n  --------------------------------\n");
         for (int i = 1; i < 65; i++) {
             int j = i / 8;
             if ((i - 1) % 8 == 0)
-                s += 8 - j + " ";
-            s += "| ";
+                s.append(8 - j).append(" ");
+            s.append("| ");
             Piece p = getPiece(i - 1);
             if (p != null)
-                s += p.forPrint();
+                s.append(p.forPrint());
             else
-                s += " ";
-            s += " ";
+                s.append(" ");
+            s.append(" ");
 
             if (j != 0 && i % 8 == 0)
-                s += "|\t\n  ---------------------------------\n";
+                s.append("|\t\n  --------------------------------\n");
             else if (j == 0 && i % 8 == 0)
-                s += "\t\n  ---------------------------------\n";
+                s.append("\t\n  --------------------------------\n");
         }
 
-        s += "\nCurrently on move: " + onMove;
+        s.append("\nCurrently on move: ").append(onMove);
 
-        s += "\nEnpassant possible: " + enpassantPossible;
-        s += "\nWhite " + whitePlayer;
-        s += "\nBlack " + blackPlayer;
+        s.append("\nEnpassant possible: ").append(enpassantPossible);
+        s.append("\nWhite ").append(whitePlayer);
+        s.append("\nBlack ").append(blackPlayer);
         System.out.println(s);
     }
 
@@ -257,12 +169,6 @@ public class Chessboard implements Serializable {
 
     public Player getOpponent() {
         return onMove.isWhite() ? blackPlayer : whitePlayer;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        return false;
     }
 
     @Override
