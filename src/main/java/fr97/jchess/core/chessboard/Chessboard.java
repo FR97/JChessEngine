@@ -19,13 +19,13 @@ public class Chessboard implements Serializable {
 
     PieceList whitePieces;
     PieceList blackPieces;
-    private PieceColor onMove;
-    //private Stack<Move> moveHistory;
-    private boolean enpassantPossible;
+    private final PieceColor onMove;
+    private final boolean enpassantPossible;
     private int enpassantPawnPosition;
 
-    private Player whitePlayer;
-    private Player blackPlayer;
+    private final Player whitePlayer;
+    private final Player blackPlayer;
+
     private Player current;
     private Player opponent;
 
@@ -161,34 +161,7 @@ public class Chessboard implements Serializable {
         return this.onMove;
     }
 
-   /* public void setOnMove(PieceColor onMove) {
-        this.onMove = onMove;
-    }*/
-/*
-    public void toggleOnMove() {
-        enpassantPossible = false;
-        enpassantPawnPosition = -1;
-        onMove = onMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
 
-        whitePlayer.setPieces(this.whitePieces);
-        blackPlayer.setPieces(this.blackPieces);
-
-        whitePlayer.findLegalMoves(this);
-        blackPlayer.findLegalMoves(this);
-        if (onMove.isWhite()) {
-            this.current = whitePlayer;
-            this.opponent = blackPlayer;
-        } else {
-            this.current = blackPlayer;
-            this.opponent = whitePlayer;
-        }
-
-        current.setInCheck(false);
-        if (current.isKingAttacked(opponent.getLegalMoves())) {
-            current.setInCheck(true);
-        }
-        System.out.println("Current " + current);
-    }*/
 
     public boolean isEnpassantPossible() {
         return enpassantPossible;
@@ -211,35 +184,35 @@ public class Chessboard implements Serializable {
     }
 
     public void print() {
-        String s = "\n-------------------------------------\n          CHESSBOARD STATE\n\n   ";
+        StringBuilder s = new StringBuilder("\n------------------------------------\n        CHESSBOARD STATE\n\n   ");
         char c = 'A';
         for (int i = 0; i < 8; i++) {
-            s += " " + c++ + "  ";
+            s.append(" ").append(c++).append("  ");
         }
-        s += "\t\n  ---------------------------------\n";
+        s.append("\t\n  --------------------------------\n");
         for (int i = 1; i < 65; i++) {
             int j = i / 8;
             if ((i - 1) % 8 == 0)
-                s += 8 - j + " ";
-            s += "| ";
+                s.append(8 - j).append(" ");
+            s.append("| ");
             Piece p = getPiece(i - 1);
             if (p != null)
-                s += p.forPrint();
+                s.append(p.forPrint());
             else
-                s += " ";
-            s += " ";
+                s.append(" ");
+            s.append(" ");
 
             if (j != 0 && i % 8 == 0)
-                s += "|\t\n  ---------------------------------\n";
+                s.append("|\t\n  --------------------------------\n");
             else if (j == 0 && i % 8 == 0)
-                s += "\t\n  ---------------------------------\n";
+                s.append("\t\n  --------------------------------\n");
         }
 
-        s += "\nCurrently on move: " + onMove;
+        s.append("\nCurrently on move: ").append(onMove);
 
-        s += "\nEnpassant possible: " + enpassantPossible;
-        s += "\nWhite " + whitePlayer;
-        s += "\nBlack " + blackPlayer;
+        s.append("\nEnpassant possible: ").append(enpassantPossible);
+        s.append("\nWhite ").append(whitePlayer);
+        s.append("\nBlack ").append(blackPlayer);
         System.out.println(s);
     }
 
@@ -257,12 +230,6 @@ public class Chessboard implements Serializable {
 
     public Player getOpponent() {
         return onMove.isWhite() ? blackPlayer : whitePlayer;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        return false;
     }
 
     @Override
