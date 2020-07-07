@@ -9,18 +9,6 @@ import fr97.jchess.core.util.PieceList;
  */
 public class BasicEvaluator implements Evaluator {
 
-
-    private int lastWhitePieceCount;
-    private int lastBlackPieceCount;
-    private double lastSum;
-
-    public BasicEvaluator() {
-
-        lastWhitePieceCount = 0;
-        lastBlackPieceCount = 0;
-        lastSum = 0;
-    }
-
     /**
      * White is minimizer
      * Black is maximizer
@@ -31,20 +19,10 @@ public class BasicEvaluator implements Evaluator {
      */
     @Override
     public int evaluate(Chessboard chessboard, int depth) {
-
         PieceList whitePieces = chessboard.getWhitePieces();
         PieceList blackPieces = chessboard.getBlackPieces();
 
-
-        /*
-        if (lastBlackPieceCount == whitePieces.size() && lastWhitePieceCount == blackPieces.size()) {
-            return lastSum;
-        }
-
-        lastWhitePieceCount = whitePieces.size();
-        lastBlackPieceCount = blackPieces.size();*/
-
-       int sum = 0;
+        int sum = 0;
 
         for (Piece p : whitePieces) {
             sum += p.type.value();
@@ -52,12 +30,9 @@ public class BasicEvaluator implements Evaluator {
         for (Piece p : blackPieces) {
             sum -= p.type.value();
         }
-        //lastSum = sum;
 
         return sum;
     }
-
-
 
 
 }
