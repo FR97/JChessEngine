@@ -22,36 +22,36 @@ public class AdvancedEvaluator implements Evaluator {
     public int evaluate(Chessboard chessboard, int depth) {
 
         return calculateScore(chessboard.getWhitePieces(), chessboard.getWhitePlayer(), chessboard.getBlackPlayer(), depth)
-                - calculateScore(chessboard.getBlackPieces(), chessboard.getBlackPlayer(), chessboard.getWhitePlayer(), depth);
+            - calculateScore(chessboard.getBlackPieces(), chessboard.getBlackPlayer(), chessboard.getWhitePlayer(), depth);
     }
 
     private int calculateScore(PieceList pieces, Player player, Player opponent, int depth) {
-
-        return pieceValue(pieces) + castling(player) + doubleBishop(pieces) + opponentCheckMated(opponent, depth) + opponentInCheck(opponent) + mobility(player) + isolatedPawns(pieces);
+        return pieceValue(pieces) + castling(player) + doubleBishop(pieces)
+            + opponentCheckMated(opponent, depth) + opponentInCheck(opponent)
+            + mobility(player) + isolatedPawns(pieces);
     }
 
-    private int doubleBishop(PieceList pieces){
+    private int doubleBishop(PieceList pieces) {
         int bishopCounter = 0;
-        for(Piece p : pieces){
-            if(p.type == PieceType.BISHOP)
+        for (Piece p : pieces) {
+            if (p.type == PieceType.BISHOP)
                 bishopCounter++;
-            if(bishopCounter == 2)
+            if (bishopCounter == 2)
                 return DOUBLE_BISHOP;
         }
         return 0;
     }
 
 
-    private int isolatedPawns(PieceList pieces){
-
+    private int isolatedPawns(PieceList pieces) {
         int sum = 0;
-        for(Piece p : pieces){
-            if(p.type == PieceType.PAWN){
-                Piece pawnSupport = pieces.get(p.position + p.color.value()*9);
-                if(pawnSupport == null || pawnSupport.type != PieceType.PAWN)
+        for (Piece p : pieces) {
+            if (p.type == PieceType.PAWN) {
+                Piece pawnSupport = pieces.get(p.position + p.color.value() * 9);
+                if (pawnSupport == null || pawnSupport.type != PieceType.PAWN)
                     sum += ISOLATED_PAWN;
-                pawnSupport = pieces.get(p.position + p.color.value()*7);
-                if(pawnSupport == null || pawnSupport.type != PieceType.PAWN)
+                pawnSupport = pieces.get(p.position + p.color.value() * 7);
+                if (pawnSupport == null || pawnSupport.type != PieceType.PAWN)
                     sum += ISOLATED_PAWN;
             }
         }
@@ -61,7 +61,7 @@ public class AdvancedEvaluator implements Evaluator {
     private int pieceValue(PieceList pieces) {
         int sum = 0;
         for (Piece p : pieces) {
-            sum += p.type.value()+PiecePositionAnalyzer.getPiecePositionValue(p);
+            sum += p.type.value() + PiecePositionAnalyzer.getPiecePositionValue(p);
         }
         return sum;
     }
@@ -71,10 +71,10 @@ public class AdvancedEvaluator implements Evaluator {
     }
 
     private int opponentCheckMated(Player player, int depth) {
-        return player.isCheckMated() ? CHECK_MATE * depthBonus(depth) : 0;
+        return player.isCheckMated() ? CHECK_MATE * calculateDepthBonus(depth) : 0;
     }
 
-    private int depthBonus(int depth) {
+    private int calculateDepthBonus(int depth) {
         return depth == 0 ? 1 : 100 * depth;
     }
 
@@ -83,7 +83,6 @@ public class AdvancedEvaluator implements Evaluator {
     }
 
     private int castling(Player player) {
-
         return player.isCastled() ? CASTLING : 0;
     }
 
