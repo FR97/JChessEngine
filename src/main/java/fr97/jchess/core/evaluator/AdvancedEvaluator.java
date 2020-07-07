@@ -14,10 +14,6 @@ public class AdvancedEvaluator implements Evaluator {
     private static final int ISOLATED_PAWN = -15;
     private static final int DOUBLE_BISHOP = 45;
 
-    public AdvancedEvaluator() {
-
-    }
-
     @Override
     public int evaluate(Chessboard chessboard, int depth) {
 
