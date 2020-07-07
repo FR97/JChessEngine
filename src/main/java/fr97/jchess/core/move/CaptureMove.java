@@ -30,11 +30,11 @@ public class CaptureMove extends Move {
         PieceList activePieces = chessboard.getActivePieces();
         PieceColor nextOnmove = this.chessboard.getOnMove().isWhite()? PieceColor.BLACK : PieceColor.WHITE;
 
-        boardBuilder.setOnMove(nextOnmove)
-                .addPieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
-                .addPieces(chessboard.getTargetPieces().without(eatenPiece),nextOnmove)
-                .setWhiteCastled(chessboard.getWhitePlayer().isCastled())
-                .setBlackCastled(chessboard.getBlackPlayer().isCastled());
+        boardBuilder.onMove(nextOnmove)
+                .pieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
+                .pieces(chessboard.getTargetPieces().without(eatenPiece),nextOnmove)
+                .whiteCastled(chessboard.getWhitePlayer().isCastled())
+                .blackCastled(chessboard.getBlackPlayer().isCastled());
 
         return boardBuilder.create();
     }

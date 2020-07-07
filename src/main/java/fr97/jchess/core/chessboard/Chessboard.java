@@ -180,7 +180,6 @@ public class Chessboard implements Serializable {
 
         private PieceList whitePieces;
         private PieceList blackPieces;
-        private List<Piece> addedPieces;
         private boolean whiteCastled;
         private boolean blackCastled;
         private PieceColor onMove;
@@ -188,17 +187,9 @@ public class Chessboard implements Serializable {
 
         public BoardBuilder() {
             this.enpassantPosition = -1;
-            this.addedPieces = new ArrayList<>();
         }
 
-
-        public BoardBuilder addPiece(Piece p) {
-            this.addedPieces.add(p);
-
-            return this;
-        }
-
-        public BoardBuilder addPieces(PieceList pieces, PieceColor color) {
+        public BoardBuilder pieces(PieceList pieces, PieceColor color) {
             if (color.isWhite())
                 this.whitePieces = pieces;
             else
@@ -207,7 +198,7 @@ public class Chessboard implements Serializable {
             return this;
         }
 
-        public BoardBuilder setOnMove(PieceColor color) {
+        public BoardBuilder onMove(PieceColor color) {
             this.onMove = color;
             return this;
         }
@@ -219,12 +210,12 @@ public class Chessboard implements Serializable {
             return this;
         }
 
-        public BoardBuilder setWhiteCastled(boolean whiteCastled) {
+        public BoardBuilder whiteCastled(boolean whiteCastled) {
             this.whiteCastled = whiteCastled;
             return this;
         }
 
-        public BoardBuilder setBlackCastled(boolean blackCastled) {
+        public BoardBuilder blackCastled(boolean blackCastled) {
             this.blackCastled = blackCastled;
             return this;
         }

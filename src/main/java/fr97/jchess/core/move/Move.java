@@ -40,12 +40,12 @@ public class Move {
         PieceList activePieces = chessboard.getActivePieces();
         PieceColor nextOnmove = this.chessboard.getOnMove().isWhite()? PieceColor.BLACK : PieceColor.WHITE;
 
-        boardBuilder.setOnMove(nextOnmove)
-                .addPieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
-                .addPieces(chessboard.getTargetPieces(),nextOnmove)
+        boardBuilder.onMove(nextOnmove)
+                .pieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to)),movingPiece.color)
+                .pieces(chessboard.getTargetPieces(),nextOnmove)
                 .setEnpassantPosition(this.type == MoveType.PAWN_DOUBLE_JUMP ? to : -1)
-                .setWhiteCastled(chessboard.getWhitePlayer().isCastled())
-                .setBlackCastled(chessboard.getBlackPlayer().isCastled());
+                .whiteCastled(chessboard.getWhitePlayer().isCastled())
+                .blackCastled(chessboard.getBlackPlayer().isCastled());
 
         return boardBuilder.create();
     }
