@@ -1,11 +1,9 @@
 package fr97.jchess.core.move;
 
 import fr97.jchess.core.chessboard.Chessboard;
-import fr97.jchess.core.piece.Piece;
-import fr97.jchess.core.piece.PieceType;
+import fr97.jchess.core.piece.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Filip on 12/2/2017.
