@@ -4,7 +4,6 @@ import fr97.jchess.core.piece.Piece;
 
 public class PiecePositionAnalyzer {
 
-
     private final static int[] whitePawnPositions = {
             0, 0, 0, 0, 0, 0, 0, 0,
             50, 50, 50, 50, 50, 50, 50, 50,
@@ -106,21 +105,21 @@ public class PiecePositionAnalyzer {
             -20, -10, -10, -10, -10, -10, -10, -20};
 
     public static int getPiecePositionValue(Piece piece) {
-
+        boolean isWhite = piece.color.isWhite();
         switch (piece.type) {
 
             case PAWN:
-                return piece.color.isWhite() ? whitePawnPositions[piece.position] : blackPawnPositions[piece.position];
+                return isWhite ? whitePawnPositions[piece.position] : blackPawnPositions[piece.position];
             case ROOK:
-                return piece.color.isWhite() ? whiteRookPositions[piece.position] : blackRookPositions[piece.position];
+                return isWhite ? whiteRookPositions[piece.position] : blackRookPositions[piece.position];
+            case BISHOP:
+                return isWhite ? whiteBishopPositions[piece.position] : blackBishopPositions[piece.position];
+            case KING:
+                return isWhite ? whiteKingPositions[piece.position] : blackKingPositions[piece.position];
             case KNIGHT:
                 return knightPositions[piece.position];
-            case BISHOP:
-                return piece.color.isWhite() ? whiteBishopPositions[piece.position] : blackBishopPositions[piece.position];
             case QUEEN:
                 return queenPositions[piece.position];
-            case KING:
-                return piece.color.isWhite() ? whiteKingPositions[piece.position] : blackKingPositions[piece.position];
         }
         return 0;
     }

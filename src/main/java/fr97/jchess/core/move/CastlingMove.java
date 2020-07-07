@@ -28,12 +28,13 @@ public class CastlingMove extends Move {
         PieceList activePieces = chessboard.getActivePieces();
         PieceColor nextOnmove = this.chessboard.getOnMove().isWhite()? PieceColor.BLACK : PieceColor.WHITE;
 
-        boardBuilder.setOnMove(nextOnmove)
-                .addPieces(activePieces.insteadOf(this.movingPiece, this.movingPiece.withPosition(to))
-                                        .insteadOf(this.movingRook, this.movingRook.withPosition(rookTo)),movingPiece.color)
-                .addPieces(chessboard.getTargetPieces(),nextOnmove)
-                .setWhiteCastled(!nextOnmove.isWhite())
-                .setBlackCastled(nextOnmove.isWhite());
+        boardBuilder.onMove(nextOnmove)
+                .pieces(activePieces
+                    .insteadOf(this.movingPiece, this.movingPiece.withPosition(to))
+                    .insteadOf(this.movingRook, this.movingRook.withPosition(rookTo)), movingPiece.color)
+                .pieces(chessboard.getTargetPieces(),nextOnmove)
+                .whiteCastled(!nextOnmove.isWhite())
+                .blackCastled(nextOnmove.isWhite());
         return boardBuilder.create();
     }
 
