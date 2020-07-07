@@ -1,15 +1,12 @@
 package fr97.jchess.core.chessboard;
 
-import fr97.jchess.core.move.Move;
-import fr97.jchess.core.move.MoveGenerator;
-import fr97.jchess.core.piece.Piece;
-import fr97.jchess.core.piece.PieceColor;
+import fr97.jchess.core.move.*;
+import fr97.jchess.core.piece.*;
 import fr97.jchess.core.player.Player;
 import fr97.jchess.core.util.PieceList;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Filip on 11/21/2017.
