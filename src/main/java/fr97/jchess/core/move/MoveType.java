@@ -8,7 +8,7 @@ public enum MoveType {
     PAWN_DOUBLE_JUMP(1),
     CHECKMATE(5),
     CAPTURE(3),
-    ENPASSANT(3),
+    EN_PASSANT(3),
     CASTLING(2);
 
     int value;

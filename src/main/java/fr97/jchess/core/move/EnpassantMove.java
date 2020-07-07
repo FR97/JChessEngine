@@ -13,7 +13,7 @@ public class EnpassantMove extends Move{
     public final Piece eatenPawn;
 
     public EnpassantMove(Chessboard chessboard, Piece movingPiece, int toPosition, Piece eatenPawn) {
-        super(chessboard, movingPiece, toPosition, MoveType.ENPASSANT);
+        super(chessboard, movingPiece, toPosition, MoveType.EN_PASSANT);
         this.eatenPawn = eatenPawn;
     }
 

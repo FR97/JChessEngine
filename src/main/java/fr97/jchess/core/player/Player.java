@@ -88,7 +88,7 @@ public class Player {
             return false;
         if (move.type == MoveType.CASTLING && this.castled)
             return false;
-        if (move.type == MoveType.ENPASSANT && !this.chessboard.isEnpassantPossible())
+        if (move.type == MoveType.EN_PASSANT && !this.chessboard.isEnpassantPossible())
             return false;
         if (!legalMoves.contains(move))
             return false;
