@@ -1,7 +1,6 @@
 package fr97.jchess.core.evaluator;
 
 import fr97.jchess.core.piece.Piece;
-import fr97.jchess.core.piece.PieceColor;
 
 public class PiecePositionAnalyzer {
 
