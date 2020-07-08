@@ -9,10 +9,10 @@ import fr97.jchess.core.util.PieceList;
 /**
  * Created by Filip on 11/21/2017.
  */
-public class EnpassantMove extends Move{
+public class EnPassantMove extends Move{
     public final Piece eatenPawn;
 
-    public EnpassantMove(Chessboard chessboard, Piece movingPiece, int toPosition, Piece eatenPawn) {
+    public EnPassantMove(Chessboard chessboard, Piece movingPiece, int toPosition, Piece eatenPawn) {
         super(chessboard, movingPiece, toPosition, MoveType.EN_PASSANT);
         this.eatenPawn = eatenPawn;
     }

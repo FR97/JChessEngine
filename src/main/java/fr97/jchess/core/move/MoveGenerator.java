@@ -157,10 +157,10 @@ public class MoveGenerator {
         if (chessboard.isEnpassantPossible()) {
             int enpassantPawnPosition = mailbox[mailbox64[chessboard.getEnpassantPawnPosition()]];
             if (mailbox[mailbox64[pawn.position - 1]] == enpassantPawnPosition) {
-                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position - 1] + 10 * direction],
+                moves.add(new EnPassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position - 1] + 10 * direction],
                     chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
             } else if (mailbox[mailbox64[pawn.position + 1]] == enpassantPawnPosition) {
-                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position + 1] + 10 * direction],
+                moves.add(new EnPassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position + 1] + 10 * direction],
                     chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
             }
         }
