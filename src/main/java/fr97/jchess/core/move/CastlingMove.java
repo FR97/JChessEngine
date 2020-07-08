@@ -2,8 +2,7 @@ package fr97.jchess.core.move;
 
 
 import fr97.jchess.core.chessboard.Chessboard;
-import fr97.jchess.core.piece.Piece;
-import fr97.jchess.core.piece.PieceColor;
+import fr97.jchess.core.piece.*;
 import fr97.jchess.core.util.PieceList;
 
 /**
