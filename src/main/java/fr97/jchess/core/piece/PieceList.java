@@ -62,20 +62,17 @@ public class PieceList implements Iterable<Piece>{
     public void remove(Piece piece){
         Piece[] newList = new Piece[16];
         int br = 0;
-        //boolean kingRemoved = true;
+
         for(int i = 0; i < size; i++){
             if(!pieces[i].equals(piece)) {
                 newList[br] = pieces[i];
                 if(pieces[i].type == PieceType.KING){
                     this.kingPosition = br;
-                   // kingRemoved = false;
                 }
                 br++;
             }
         }
-        //if(kingRemoved){
-            //throw new RuntimeException("You can't delete king");
-       // }
+
         this.pieces = null;
         this.pieces = newList;
         this.size = br;
@@ -118,7 +115,7 @@ public class PieceList implements Iterable<Piece>{
     private static class PieceIterator implements Iterator<Piece> {
 
         private int current;
-        private PieceList pieceList;
+        private final PieceList pieceList;
 
         private PieceIterator(PieceList pieceList){
             current = 0;

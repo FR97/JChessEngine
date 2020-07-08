@@ -92,8 +92,7 @@ public class MoveGenerator {
         return moves;
     }
 
-    private static List<Move> addPossibleCastlings(final Piece king, final Chessboard chessboard, final List<Move> moves) {
-
+    private static void addPossibleCastlings(final Piece king, final Chessboard chessboard, final List<Move> moves) {
         if (!king.moved) {
             if (king.color.isWhite()) {
                 Piece rook = chessboard.getPiece(63);
@@ -103,7 +102,9 @@ public class MoveGenerator {
                 }
                 rook = chessboard.getPiece(56);
                 if (rook != null && !rook.moved) {
-                    if (chessboard.getPiece(57) == null && chessboard.getPiece(58) == null && chessboard.getPiece(59) == null)
+                    if (chessboard.getPiece(57) == null
+                        && chessboard.getPiece(58) == null
+                        && chessboard.getPiece(59) == null)
                         moves.add(new CastlingMove(chessboard, king, 58, rook, 59));
                 }
             } else {
@@ -114,13 +115,13 @@ public class MoveGenerator {
                 }
                 rook = chessboard.getPiece(0);
                 if (rook != null && !rook.moved) {
-                    if (chessboard.getPiece(1) == null && chessboard.getPiece(2) == null && chessboard.getPiece(3) == null)
+                    if (chessboard.getPiece(1) == null
+                        && chessboard.getPiece(2) == null
+                        && chessboard.getPiece(3) == null)
                         moves.add(new CastlingMove(chessboard, king, 2, rook, 3));
                 }
             }
         }
-
-        return moves;
     }
 
     private static List<Move> findPossibleMovesForPawn(final Piece pawn, final Chessboard chessboard) {
@@ -132,7 +133,6 @@ public class MoveGenerator {
         if (possible != -1) {
             if (chessboard.getPiece(possible) == null) {
                 moves.add(new Move(chessboard, pawn, possible));
-                // Doubli skok
                 possible = mailbox[mailbox64[possible] + 10 * direction];
                 if (chessboard.getPiece(possible) == null && !pawn.moved)
                     moves.add(new Move(chessboard, pawn, possible, MoveType.PAWN_DOUBLE_JUMP));
@@ -157,10 +157,10 @@ public class MoveGenerator {
         if (chessboard.isEnpassantPossible()) {
             int enpassantPawnPosition = mailbox[mailbox64[chessboard.getEnpassantPawnPosition()]];
             if (mailbox[mailbox64[pawn.position - 1]] == enpassantPawnPosition) {
-                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position - 1] + 10 * direction],
+                moves.add(new EnPassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position - 1] + 10 * direction],
                     chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
             } else if (mailbox[mailbox64[pawn.position + 1]] == enpassantPawnPosition) {
-                moves.add(new EnpassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position + 1] + 10 * direction],
+                moves.add(new EnPassantMove(chessboard, pawn, mailbox[mailbox64[pawn.position + 1] + 10 * direction],
                     chessboard.getPiece(chessboard.getEnpassantPawnPosition())));
             }
         }
