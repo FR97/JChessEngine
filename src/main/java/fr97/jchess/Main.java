@@ -1,13 +1,11 @@
 package fr97.jchess;
 
 import fr97.jchess.core.Game;
-import fr97.jchess.gui.ChessboardComponent;
-import fr97.jchess.gui.GameController;
+import fr97.jchess.gui.*;
+import fr97.jchess.gui.utils.AlertHelper;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -22,7 +20,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         HBox root = new HBox();
         Game game = new Game(true);
         ChessboardComponent chessboard = new ChessboardComponent();
@@ -31,7 +28,7 @@ public class Main extends Application {
         Button btnUndo = new Button("Undo");
 
         btnUndo.setOnAction(gameController::undoEventHandler);
-        
+
         root.getChildren().add(new Label("JavaFXChess"));
         root.getChildren().add(chessboard.getComponentNode());
         root.getChildren().add(btnUndo);
@@ -43,6 +40,10 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
 
-
+        primaryStage.setOnCloseRequest(event -> {
+            if(!AlertHelper.showConfirmationDialog("Are you sure you want to exit?")){
+                event.consume();
+            }
+        });
     }
 }

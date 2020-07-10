@@ -3,7 +3,6 @@ package fr97.jchess.gui;
 import fr97.jchess.core.Game;
 import fr97.jchess.core.piece.PieceColor;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 /**
  * Created by Filip on 11/28/2017.
@@ -45,49 +44,49 @@ public class GameController {
     }
 
     private void handlePreviousTileSelected(Tile newTile) {
-        // If same tile is clicked again
         if (selectedTile.equals(newTile)) {
-            chessboardUi.removePossibleMoves(currentPossibleMoves);
-            selectedTile.deselect();
-            selectedTile = null;
+            deselectTile();
         } else {
             if (newTile.isPossible()) {
-                // MOVE TO NEW POSITION
-
                 chessboardUi.removeChecked();
-                game.makeMove(selectedTile.POSITION, newTile.POSITION);
+                game.makeMove(selectedTile.position, newTile.position);
 
-                selectedTile.deselect();
-                chessboardUi.removePossibleMoves(currentPossibleMoves);
+                deselectTile();
+
                 currentPossibleMoves = new int[0];
 
                 if (game.getCurrentPlayer().isInCheck()) {
                     chessboardUi.setChecked(game.getCurrentPlayer().getKingPosition());
                 }
 
-                selectedTile = null;
-
                 chessboardUi.updateTiles(game.boardAsArray());
                 toggleStatus();
             } else if (selectedTile.isOccupied() && selectedTile.getPieceColor().equals(newTile.getPieceColor())) {
-                chessboardUi.removePossibleMoves(currentPossibleMoves);
-                selectedTile.deselect();
-                selectedTile = newTile;
-                selectedTile.select();
-
-                currentPossibleMoves = new int[0];
-                currentPossibleMoves = game.getPossibleMoves(selectedTile.POSITION);
-
-                chessboardUi.setPossibleMoves(currentPossibleMoves);
+                deselectTile();
+                selectTile(newTile);
             }
         }
+    }
+
+    private void deselectTile() {
+        chessboardUi.removePossibleMoves(currentPossibleMoves);
+        selectedTile.deselect();
+        selectedTile = null;
+    }
+
+    private void selectTile(Tile newSelected){
+        this.selectedTile = newSelected;
+        selectedTile.select();
+
+        currentPossibleMoves = game.getPossibleMoves(selectedTile.position);
+        chessboardUi.setPossibleMoves(currentPossibleMoves);
     }
 
     private void handleNoPreviousTileSelected(Tile newTile) {
         if (newTile.isOccupied() && newTile.getPieceColor() == colorOnMove) {
             selectedTile = newTile;
             selectedTile.select();
-            currentPossibleMoves = game.getPossibleMoves(selectedTile.POSITION);
+            currentPossibleMoves = game.getPossibleMoves(selectedTile.position);
 
             chessboardUi.setPossibleMoves(currentPossibleMoves);
         }
