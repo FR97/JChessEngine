@@ -2,6 +2,7 @@ package fr97.jchess;
 
 import fr97.jchess.core.Game;
 import fr97.jchess.gui.*;
+import fr97.jchess.gui.utils.AlertHelper;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -38,5 +39,11 @@ public class Main extends Application {
         primaryStage.centerOnScreen();
         primaryStage.setResizable(false);
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> {
+            if(!AlertHelper.showConfirmationDialog("Are you sure you want to exit?")){
+                event.consume();
+            }
+        });
     }
 }
