@@ -26,18 +26,13 @@ public class ChessboardComponent {
 
     public void initWithStartingPositions(String[] chessboard, EventHandler<ActionEvent> eventHandler) {
 
-        for (int i = 0; i < 8; i++) {
-            char c = 'A';
-            c += i;
-            Label lblLetters = new Label(Character.toString(c));
-            lblLetters.setPadding(new Insets(0, 10, 0, 50));
-            Label lblNumbers = new Label(Integer.toString(i + 1));
-            lblNumbers.setPadding(new Insets(35, 0, 10, 0));
-            lblNumbers.setAlignment(Pos.CENTER);
-            parent.add(lblLetters, i + 1, 0);
-            parent.add(lblNumbers, 0, i + 1);
+        addFilesAndRanks();
+        addTiles(chessboard, eventHandler);
 
-        }
+        parent.add(grid, 1, 1, 9, 9);
+    }
+
+    private void addTiles(String[] chessboard, EventHandler<ActionEvent> eventHandler) {
         for (int i = 0; i < 64; i++) {
             Tile tile = new Tile(i);
             tile.setPiece(chessboard[i]);
@@ -49,12 +44,22 @@ public class ChessboardComponent {
             tile.setOnAction(eventHandler);
             this.chessboard[i] = tile;
             grid.add(tile, i % 8, i / 8);
-
         }
-
-        parent.add(grid, 1, 1, 9, 9);
     }
 
+    private void addFilesAndRanks() {
+        for (int i = 0; i < 8; i++) {
+            char c = 'A';
+            c += i;
+            Label lblLetters = new Label(Character.toString(c));
+            lblLetters.setPadding(new Insets(0, 10, 0, 50));
+            Label lblNumbers = new Label(Integer.toString(i + 1));
+            lblNumbers.setPadding(new Insets(35, 0, 10, 0));
+            lblNumbers.setAlignment(Pos.CENTER);
+            parent.add(lblLetters, i + 1, 0);
+            parent.add(lblNumbers, 0, i + 1);
+        }
+    }
 
 
     public void updateTiles(String[] chessboard) {
