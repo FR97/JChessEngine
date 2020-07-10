@@ -60,7 +60,7 @@ public class ChessboardComponent {
     public void updateTiles(String[] chessboard) {
         for (Node n : grid.getChildren()) {
             Tile tile = (Tile) n;
-            tile.setPiece(chessboard[tile.POSITION]);
+            tile.setPiece(chessboard[tile.position]);
         }
     }
 

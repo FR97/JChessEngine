@@ -3,7 +3,6 @@ package fr97.jchess.gui;
 import fr97.jchess.core.Game;
 import fr97.jchess.core.piece.PieceColor;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 /**
  * Created by Filip on 11/28/2017.
@@ -50,7 +49,7 @@ public class GameController {
         } else {
             if (newTile.isPossible()) {
                 chessboardUi.removeChecked();
-                game.makeMove(selectedTile.POSITION, newTile.POSITION);
+                game.makeMove(selectedTile.position, newTile.position);
 
                 deselectTile();
 
@@ -79,7 +78,7 @@ public class GameController {
         this.selectedTile = newSelected;
         selectedTile.select();
 
-        currentPossibleMoves = game.getPossibleMoves(selectedTile.POSITION);
+        currentPossibleMoves = game.getPossibleMoves(selectedTile.position);
         chessboardUi.setPossibleMoves(currentPossibleMoves);
     }
 
@@ -87,7 +86,7 @@ public class GameController {
         if (newTile.isOccupied() && newTile.getPieceColor() == colorOnMove) {
             selectedTile = newTile;
             selectedTile.select();
-            currentPossibleMoves = game.getPossibleMoves(selectedTile.POSITION);
+            currentPossibleMoves = game.getPossibleMoves(selectedTile.position);
 
             chessboardUi.setPossibleMoves(currentPossibleMoves);
         }

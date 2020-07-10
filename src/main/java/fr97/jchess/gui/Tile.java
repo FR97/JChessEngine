@@ -13,7 +13,7 @@ public class Tile extends Button {
     private static final String IMAGE_PATH_PREFIX = "/img/";
     private static final String IMAGE_PATH_POSTFIX = ".png";
 
-    public final int POSITION;
+    public final int position;
     private String piece;
     private boolean selected;
     private boolean occupied;
@@ -26,7 +26,7 @@ public class Tile extends Button {
 
     public Tile(int position, String piece) {
         super();
-        this.POSITION = position;
+        this.position = position;
         this.selected = false;
         this.checked = false;
         this.possible = false;
@@ -130,18 +130,19 @@ public class Tile extends Button {
 
         Tile tile = (Tile) o;
 
-        return POSITION == tile.POSITION;
+        return position == tile.position;
     }
 
 
     @Override
     public String toString() {
         return "Tile{" +
-            "POSITION=" + POSITION +
+            "position=" + position +
             ", piece='" + piece + '\'' +
             ", selected=" + selected +
             ", occupied=" + occupied +
             ", checked=" + checked +
+            ", possible=" + possible +
             '}';
     }
 }
