@@ -12,6 +12,10 @@ import java.util.List;
 
 public class StatusView implements FXView<VBox> {
 
+    private static final String LBL_JCHESS_ID = "lbl_jchess";
+    private static final String LBL_STATUS_ID = "lbl_status";
+    private static final String LBL_MOVES_COUNTER_ID = "lbl_moves_counter";
+
     private final VBox root;
     private final Label lblGameStatus;
     private final Label lblMovesPlayed;
@@ -26,7 +30,7 @@ public class StatusView implements FXView<VBox> {
 
         Label lblJChess = new Label("JChess");
         lblJChess.setFont(new Font("Arial Bold", 32));
-        lblJChess.setId("lbl_jchess");
+        lblJChess.setId(LBL_JCHESS_ID);
 
         StackPane spTitle = new StackPane();
 
@@ -36,13 +40,13 @@ public class StatusView implements FXView<VBox> {
         lblGameStatus = new Label();
         lblGameStatus.setFont(new Font("Arial Bold", 24));
         lblGameStatus.setText("Status: WHITE ON MOVE");
-        lblGameStatus.setId("lbl_status");
+        lblGameStatus.setId(LBL_STATUS_ID);
 
         lblMovesPlayed = new Label("Total moves: 0");
         lblMovesPlayed.setFont(new Font("Arial Bold", 20));
-        lblMovesPlayed.setId("lbl_moves_counter");
+        lblMovesPlayed.setId(LBL_MOVES_COUNTER_ID);
         List<Node> children = root.getChildren();
-        
+
         children.add(spTitle);
         children.add(lblGameStatus);
         children.add(lblMovesPlayed);
