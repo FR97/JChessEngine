@@ -10,21 +10,17 @@ import javafx.scene.image.ImageView;
  */
 public class Tile extends Button {
 
-    private static final String IMAGE_PATH_PREFIX = "/img/";
-    private static final String IMAGE_PATH_POSTFIX = ".png";
-
     public final int position;
     private String piece;
     private boolean selected;
     private boolean occupied;
     private boolean checked;
     private boolean possible;
-
-    public Tile(int position) {
+    public Tile(int position){
         this(position, "");
     }
 
-    public Tile(int position, String piece) {
+    public Tile(int position, String piece){
         super();
         this.position = position;
         this.selected = false;
@@ -36,46 +32,45 @@ public class Tile extends Button {
         setPiece(piece);
     }
 
-    public void setPiece(String piece) {
+    public void setPiece(String piece){
         this.piece = piece;
         setOccupied();
         setImage();
     }
 
-    public String getPiece() {
+    public String getPiece(){
         return this.piece;
 
     }
 
-    public void markAsPossibleMove(boolean possible) {
+    public void markAsPossibleMove(boolean possible){
         this.possible = possible;
-        if (possible)
+        if(possible)
             this.getStyleClass().add("tile-possible");
         else
             this.getStyleClass().remove("tile-possible");
     }
 
-    public boolean isPossible() {
+    public boolean isPossible(){
         return this.possible;
     }
 
-    public void removePossibleMark() {
+    public void removePossibleMark(){
         this.getStyleClass().remove("tile-possible");
     }
 
-    private void setOccupied() {
+    private void setOccupied(){
         occupied = piece.length() > 0;
     }
 
-    public PieceColor getPieceColor() {
-        if (!occupied) {
+    public PieceColor getPieceColor(){
+        if(!occupied){
             return null;
-        } else {
-            if (piece.startsWith("W")) {
+        }else {
+            if(piece.startsWith("W"))
                 return PieceColor.WHITE;
-            } else {
+            else
                 return PieceColor.BLACK;
-            }
         }
     }
 
@@ -85,22 +80,23 @@ public class Tile extends Button {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
-        if (checked) {
+        if(checked){
             this.getStyleClass().add("tile-checked");
-        } else {
+        }else{
             this.getStyleClass().remove("tile-checked");
         }
     }
 
-    public void setColor(String color) {
-        this.getStyleClass().add("tile-" + color);
+    public void setColor(String color)
+    {
+        this.getStyleClass().add("tile-"+color);
     }
 
-    private void setImage() {
-        if (occupied) {
-            String imgPath = IMAGE_PATH_PREFIX + piece + IMAGE_PATH_POSTFIX;
-            this.setGraphic(new ImageView(new Image(getClass().getResourceAsStream(imgPath))));
-        } else {
+    private void setImage(){
+        if(occupied){
+            String imgPath ="/img/"+piece+".png";
+            this.setGraphic(new ImageView(new Image(getClass().getResourceAsStream(imgPath.toLowerCase()))));
+        }else{
             this.setGraphic(null);
         }
     }
@@ -109,7 +105,7 @@ public class Tile extends Button {
         return occupied;
     }
 
-    public boolean isSelected() {
+    public boolean isSelected(){
         return this.selected;
     }
 
@@ -118,9 +114,28 @@ public class Tile extends Button {
         this.selected = true;
     }
 
-    public void deselect() {
+    public void deselect(){
         this.getStyleClass().remove("tile-selected");
         this.selected = false;
+    }
+
+
+
+    public void toggleLastMove(){
+        if(this.getStyleClass().contains("tile-last-move")){
+            this.getStyleClass().remove("tile-last-move");
+        }else{
+            this.getStyleClass().add("tile-last-move");
+        }
+    }
+
+    public void addLastMoveMark(){
+        this.getStyleClass().add("tile-last-move");
+    }
+
+    public void removeLastMoveMark(){
+        if(this.getStyleClass().contains("tile-last-move"))
+            this.getStyleClass().remove("tile-last-move");
     }
 
     @Override
@@ -130,20 +145,19 @@ public class Tile extends Button {
 
         Tile tile = (Tile) o;
 
-        return position == tile.position;
+        return position ==tile.position;
     }
-
 
     @Override
     public String toString() {
-        return "Tile{" +
-            "position=" + position +
-            ", piece='" + piece + '\'' +
-            ", selected=" + selected +
-            ", occupied=" + occupied +
-            ", checked=" + checked +
-            ", possible=" + possible +
-            '}';
+        return new StringBuilder().append("Tile{")
+            .append("POSITION=").append(position)
+            .append(", piece='").append(piece).append('\'')
+            .append(", selected=").append(selected)
+            .append(", occupied=").append(occupied)
+            .append(", checked=").append(checked)
+            .append('}').toString();
     }
 }
+
 
