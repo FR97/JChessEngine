@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}/suppressions.xml"
+                  default="${config_loc}/suppressions.xml"/>
+    </module>
+
+    <property name="severity" value="error"/>
+
+    <property name="fileExtensions" value="java"/>
+
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="module\-info\.java$"/>
+    </module>
+
+    <!-- Checks whether files end with a new line -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <!-- Checks line length -->
+    <module name="LineLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="120"/>
+    </module>
+
+    <!-- Checks for whitespace -->
+    <module name="FileTabCharacter"/>
+
+    <module name="TreeWalker">
+
+        <!-- Checks for Naming Conventions -->
+        <module name="ConstantName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+
+        <!-- Checks for imports -->
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="processJavadoc" value="false"/>
+        </module>
+
+        <!-- Checks for method size -->
+        <module name="MethodLength"/>
+        <module name="ParameterNumber">
+            <property name="max" value="8"/>
+        </module>
+
+        <!-- Checks for whitespace -->
+        <module name="EmptyForIteratorPad"/>
+        <module name="GenericWhitespace"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+
+        <!-- Checks modifiers -->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+
+        <!-- Checks for {} -->
+        <module name="AvoidNestedBlocks"/>
+        <module name="EmptyBlock"/>
+        <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
+        <module name="RightCurly"/>
+
+
+        <!-- Checks for common coding problems -->
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
+        <module name="IllegalInstantiation"/>
+        <module name="InnerAssignment"/>
+        <module name="MagicNumber">
+            <property name="tokens" value="NUM_DOUBLE, NUM_FLOAT"/>
+            <property name="ignoreNumbers" value="0, 1"/>
+            <property name="ignoreAnnotation" value="true"/>
+        </module>
+        <module name="MissingOverrideCheck"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+
+        <module name="NestedIfDepthCheck">
+            <property name="max" value="3"/>
+        </module>
+        <module name="NestedTryDepthCheck">
+            <property name="max" value="3"/>
+        </module>
+
+        <!-- Checks for class design -->
+        <module name="FinalClass"/>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InterfaceIsType"/>
+        <module name="VisibilityModifier"/>
+
+        <!-- Miscellaneous other checks -->
+        <module name="ArrayTypeStyle"/>
+        <module name="UpperEll"/>
+
+    </module>
+</module>
+
