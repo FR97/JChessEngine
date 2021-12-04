@@ -1,17 +1,11 @@
 plugins {
-    id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id "java"
     id "checkstyle"
 }
 
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = '7.0'
-}
-
-javafx {
-    version = "17"
-    modules = [ 'javafx.controls' ]
 }
 
 checkstyle {
@@ -28,13 +22,13 @@ subprojects {
         spekVersion = '2.0.8'
         annotationsVersion = '15.0'
         kotlinVersion = '1.4.0'
-        junitJupiter = '5.6.2'
+        junitJupiter = '5.7.0'
         assertJ = '3.16.1'
     }
 
     apply plugin: 'java'
     apply plugin: 'java-library'
-    apply plugin: 'checkstyle'
+//    apply plugin: 'checkstyle'
 
     compileJava {
         sourceCompatibility = 16
@@ -43,15 +37,12 @@ subprojects {
 
     repositories {
         mavenCentral()
+        gradlePluginPortal()
     }
 
     dependencies {
 
         implementation "org.jetbrains:annotations:$annotationsVersion"
-
-        // lombok
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
 
         // junit5
         testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiter")

@@ -5,16 +5,6 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-
-    <!-- Allows less restrictions on member fields for Http Request/Response models -->
-    <suppress checks="VisibilityModifier" files=".*Response.java|.*Request\.java" />
-    <suppress checks="MemberName" files="FastAuthResponse\.java" />
-
-    <suppress checks="ParameterNumber" files="FastTransaction\.java" />
-
-    <suppress checks="VisibilityModifier" files=".*Response.java|.*Request\.java" />
-
-    <suppress files="ManigoLedgerAdmin\.java" checks="[a-zA-Z0-9]*"/>
     <!-- Suppress checks in test classes -->
     <suppress files=".*[\\/]src[\\/](test|it)[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>
