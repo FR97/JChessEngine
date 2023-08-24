@@ -1,0 +1,79 @@
+plugins {
+    id "java"
+    id "checkstyle"
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = '7.0'
+}
+
+checkstyle {
+    toolVersion '8.26'
+    configFile file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+}
+
+subprojects {
+    group = 'fr97'
+    version '0.0.1'
+
+    ext {
+        profile = 'dev'
+        spekVersion = '2.0.8'
+        annotationsVersion = '15.0'
+        kotlinVersion = '1.4.0'
+        junitJupiter = '5.7.0'
+        assertJ = '3.16.1'
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+//    apply plugin: 'checkstyle'
+
+    compileJava {
+        sourceCompatibility = 16
+        targetCompatibility = 16
+    }
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+
+        implementation "org.jetbrains:annotations:$annotationsVersion"
+
+        // junit5
+        testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiter")
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiter"
+        testImplementation("org.assertj:assertj-core:$assertJ")
+
+        // kotlin
+        testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+        testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    }
+
+    checkstyleMain {
+        source = 'src/main/java'
+    }
+    checkstyleTest {
+        source = 'src/test/java'
+    }
+
+    test {
+        useJUnitPlatform {
+            includeEngines 'junit-jupiter'
+        }
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+        beforeTest { descriptor ->
+            logger.lifecycle("\n")
+        }
+        afterTest { descriptor ->
+            logger.lifecycle("Running test for class: $descriptor.className")
+        }
+        failFast = true
+    }
+}

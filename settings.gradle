@@ -1,0 +1,12 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+
+rootProject.name = 'jchess-engine'
+include 'core'
+include 'app-fx'
+
