@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Archiver-Version: Plexus Archiver
 Built-By: Filip
+JavaFX-Application-Class: fr97.jchess.Main
+Main-Class: fr97.jchess.Main
 Created-By: Apache Maven 3.3.9
-fr97.jchess.Main-Class: fr97.jchess.Main
-Build-Jdk: 1.8.0_112
+Build-Jdk: 13.0.2
